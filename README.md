@@ -6,7 +6,26 @@ Jest transformer for compiling Embedded Ruby template JavaScript files (.js.erb)
 
 ## Install
 
-## Configuration
+Use npm
+
+### Jest Configuration
+
+Developed with Jest version 1.22.4
+
+```
+"moduleFileExtensions": [
+  "js",
+  "js.erb"
+],
+```
+
+```
+"transform": {
+  "\\.js.erb$": "jest-erb-transformer"
+}
+```
+
+## Options
 
 ## Usage
 
