@@ -1,6 +1,6 @@
 {
   "name": "jest-erb-transformer",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Jest transformer for Embedded Ruby (`.erb`) files in Ruby projects",
   "main": "index.js",
   "scripts": {
@@ -18,5 +18,8 @@
   "homepage": "https://github.com/cpcwood/jest-erb-transformer#readme",
   "devDependencies": {
     "jest": "^26.0.1"
+  },
+  "dependencies": {
+    "deasync": "^0.1.20"
   }
 }

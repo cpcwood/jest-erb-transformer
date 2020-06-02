@@ -9,5 +9,9 @@ function transformErb (filePath) {
 }
 
 test('compiles a simple file', () => {
-  expect(transformErb('./tests/helloWorld.js.erb')).toEqual("var helloWorld = 'Hello World'")
+  expect(transformErb('./tests/helloWorld.js.erb')).toContain("var helloWorld = 'Hello World'")
+})
+
+test('compiles a file with the ruby erb engine', () => {
+  expect(transformErb('./tests/erbEngine.js.erb')).toContain("var engine = 'erb'")
 })
