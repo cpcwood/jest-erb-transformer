@@ -2,7 +2,7 @@
 
 ## Overview 
 
-Jest transformer for compiling Embedded Ruby template JavaScript files (.js.erb) for use in the Jest JavaScript testing framework. Based off the [rails-erb-loader](https://github.com/usabilityhub/rails-erb-loader.git).
+Jest transformer for compiling Embedded Ruby template JavaScript files (.js.erb) for use in the Jest JavaScript testing framework.
 
 Developed with Jest version 1.22.4
 
@@ -20,6 +20,8 @@ Add to project using Yarn:
 yarn add jest-erb-transformer
 ```
 
+## Configuration
+
 ### Jest Configuration
 
 Ensure the following is included in the project ```package.json``` jest key:
@@ -33,17 +35,25 @@ Ensure the following is included in the project ```package.json``` jest key:
 
 ```json
 "transform": {
-  "\\.js.erb$": "jest-erb-transformer"
+  "\\.js\\.erb$": "jest-erb-transformer"
 }
 ```
 
-### Additional Options
+### Options
 
-tbc
+To add custom configuration, such as using the Ruby on Rails runner for ERB compilation, add a configuration object to the transformer entry in the ```package.json``` using the Jest syntax, such as:
 
-## Usage
+```json
+"transform": {
+  "\\.js\\.erb$": [ "jest-erb-transformer", { "rails": true } ]
+}
+```
 
-tbc
+
+| Key | Default | Description |
+| :--- | :--- | :--- |
+| ```"rails"``` | ```false``` | Transformer uses 'ruby' command by default, set key to ```true``` to use ```bin/rails runner```. The ```"rails"``` option can be useful if the .erb files include variables such as ```Rails.application.credentails```.|
+
 
 ## License
 
