@@ -36,29 +36,37 @@ test('compiles a file with the ruby erb engine', () => {
 })
 
 test('user config - rails application', () => {
-  var testConfig = { application: 'rails' }
+  var testConfig = { "application": "rails" }
   expect(transformErb('./tests/configApplication.js.erb', testConfig)).toContain("var application = 'rails'")
 })
 
 test('user config - erubi compiler', () => {
-  var testConfig = { engine: 'erubi' }
+  var testConfig = { "engine": "erubi" }
   expect(transformErb('./tests/erbEngine.js.erb', testConfig)).toContain("var engine = 'erubi'")
 })
 
 // Warnings
-test('user config - invalid rails option entered', () => {
-  var testConfig = { application: 'not-an-option' }
+test('user config - invalid configuration key entered', () => {
+  var testConfig = { "not-a-key": "value" }
   var consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
   transformErb('./tests/helloWorld.js.erb', testConfig)
-  expect(consoleSpy).toHaveBeenLastCalledWith("WARNING - User Configuration: \"application\": \"not-an-option\" is not a valid \"application\" option, using default \"ruby\" instead!")
+  expect(consoleSpy).toHaveBeenLastCalledWith("WARNING - User Configuration: \"not-a-key\" is not a valid configuration key and will be ignored!")
+  consoleSpy.mockRestore()
+})
+
+test('user config - invalid rails option entered', () => {
+  var testConfig = { "application": 'not-a-value' }
+  var consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
+  transformErb('./tests/helloWorld.js.erb', testConfig)
+  expect(consoleSpy).toHaveBeenLastCalledWith("WARNING - User Configuration: \"application\": \"not-a-value\" is not a valid \"application\" value, using default \"ruby\" instead!")
   consoleSpy.mockRestore()
 })
 
 test('user config - invalid engine type entered', () => {
-  var testConfig = { engine: 'not-an-engine' }
+  var testConfig = { "engine": 'not-an-engine' }
   var consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
   transformErb('./tests/erbEngine.js.erb', testConfig)
-  expect(consoleSpy).toHaveBeenLastCalledWith("WARNING - User Configuration: \"engine\": \"not-an-engine\" is not a valid \"engine\" option, using default \"erb\" instead!")
+  expect(consoleSpy).toHaveBeenLastCalledWith("WARNING - User Configuration: \"engine\": \"not-an-engine\" is not a valid \"engine\" value, using default \"erb\" instead!")
   consoleSpy.mockRestore()
 })
 

@@ -9,21 +9,29 @@ function loadConfig(filePath, jestConfig) {
   var engine = 'erb'
   var rubyTransformerPath = path.join(__dirname, 'erb_transformer.rb')
   var args = [ rubyTransformerPath ]
-  
-  // User config
+
+  // Load user config
   var erbTransformers = jestConfig.transform.filter( e => e[1] === __filename )
   var userConfig = erbTransformers.find( e => (new RegExp(e[0])).test(filePath) )[2]
+  var configKeys = ["application", "engine"]
+  Object.keys(userConfig).forEach( key => {
+    if (!configKeys.includes(key)) {
+      console.warn(`WARNING - User Configuration: "${key}" is not a valid configuration key and will be ignored!`)
+    }
+  })
+
+  // Apply user config
   if (userConfig.application === 'rails') {
     application = 'bin/rails'
     args.unshift('runner')
   } else if (userConfig.application && userConfig.application !== 'ruby') {
-    console.warn(`WARNING - User Configuration: "application": "${userConfig.application}" is not a valid "application" option, using default "${application}" instead!`)
+    console.warn(`WARNING - User Configuration: "application": "${userConfig.application}" is not a valid "application" value, using default "${application}" instead!`)
   }
   if (userConfig.engine === 'erubi') {
     args.push('erubi')
   } else { 
     if (userConfig.engine && userConfig.engine !== 'erb') {
-      console.warn(`WARNING - User Configuration: "engine": "${userConfig.engine}" is not a valid "engine" option, using default "${engine}" instead!`)
+      console.warn(`WARNING - User Configuration: "engine": "${userConfig.engine}" is not a valid "engine" value, using default "${engine}" instead!`)
     }
     args.push(engine)
   }
