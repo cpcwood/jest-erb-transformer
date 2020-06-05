@@ -6,10 +6,9 @@ var path = require('path')
 function loadConfig(filePath, jestConfig) {
   // Default Config
   var command = 'ruby'
+  var engine = 'erb'
   var rubyTransformerPath = path.join(__dirname, 'erb_transformer.rb')
-  var args = [
-    rubyTransformerPath
-  ]
+  var args = [ rubyTransformerPath ]
   
   // User config
   var erbTransformers = jestConfig.transform.filter( e => e[1] == __filename )
@@ -18,8 +17,13 @@ function loadConfig(filePath, jestConfig) {
     command = 'bin/rails'
     args.unshift('runner')
   }
-  if (userConfig.engine == 'erubi') {
+  if (userConfig.engine === 'erubi') {
     args.push('erubi')
+  } else { 
+    if (userConfig.engine && userConfig.engine !== 'erb') {
+      console.warn("User Configuration: engine: '" + userConfig.engine + "' is not a valid engine option, using 'erb' instead")
+    }
+    args.push(engine)
   }
   
   var config = {

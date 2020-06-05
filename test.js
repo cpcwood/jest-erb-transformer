@@ -43,3 +43,11 @@ test('user config - erubi compiler', () => {
   var testConfig = { engine: 'erubi' }
   expect(transformErb('./tests/erbEngine.js.erb', testConfig)).toContain("var engine = 'erubi'")
 })
+
+test('user config - invalid engine type entered', () => {
+  var testConfig = { engine: 'not-an-engine' }
+  const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
+  transformErb('./tests/erbEngine.js.erb', testConfig)
+  expect(consoleSpy).toHaveBeenLastCalledWith("User Configuration: engine: 'not-an-engine' is not a valid engine option, using 'erb' instead")
+  consoleSpy.mockRestore()
+})
