@@ -45,15 +45,16 @@ To add custom configuration, such as using the Ruby on Rails runner for ERB comp
 
 ```json
 "transform": {
-  "\\.js\\.erb$": [ "jest-erb-transformer", { "rails": true } ]
+  "\\.js\\.erb$": [ "jest-erb-transformer", { application: "rails" } ]
 }
 ```
 
+Default options will be applied automatically, 
 
 | Key | Default Value | Description |
 | :--- | :--- | :--- |
-| ```rails``` | ```false``` | Transformer uses 'ruby' command by default, set value to ```true``` to use ```bin/rails runner```. The ```"rails"``` option can be useful if the .erb files include variables such as ```Rails.application.credentails```. |
-| ```engine``` | ```'erb'``` | Transformer uses the ruby 'ERB' engine by default, to use the [Erubi](https://github.com/jeremyevans/erubi) engine set the value to ```'erubi'```. |
+| ```application``` | ```"ruby"``` | Transformer is run using ```ruby``` by default, set value to ```"rails"``` to use ```bin/rails runner```. The ```"rails"``` option can be useful if the .erb files include Ruby on Rails specific environment variables such as ```Rails.application.credentails```. |
+| ```engine``` | ```"erb"``` | Transformer uses the ruby 'ERB' engine by default, to use the [Erubi](https://github.com/jeremyevans/erubi) engine set the value to ```"erubi"```. |
 
 
 ## License
