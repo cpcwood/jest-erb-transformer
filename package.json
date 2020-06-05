@@ -26,8 +26,5 @@
   "homepage": "https://github.com/cpcwood/jest-erb-transformer#readme",
   "devDependencies": {
     "jest": "^26.0.1"
-  },
-  "dependencies": {
-    "deasync": "^0.1.20"
   }
 }

@@ -45,6 +45,13 @@ test('user config - erubi compiler', () => {
   expect(transformErb('./tests/erbEngine.js.erb', testConfig)).toContain("var engine = 'erubi'")
 })
 
+test('user config - timeout', () => {
+  var testConfig = { "timeout": 450 }
+  expect( () => {
+    transformErb('./tests/configSleep500.js.erb', testConfig)
+  }).toThrow(`Compilation of './tests/configSleep500.js.erb' timed out after 450ms!`)
+})
+
 // Warnings
 test('user config - invalid configuration key entered', () => {
   var testConfig = { "not-a-key": "value" }
@@ -69,5 +76,7 @@ test('user config - invalid engine type entered', () => {
   expect(consoleSpy).toHaveBeenLastCalledWith("WARNING - User Configuration: \"engine\": \"not-an-engine\" is not a valid \"engine\" value, using default \"erb\" instead!")
   consoleSpy.mockRestore()
 })
+
+// timeout incorrect type
 
 // Errors
