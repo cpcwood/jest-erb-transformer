@@ -34,7 +34,12 @@ test('compiles a file with the ruby erb engine', () => {
   expect(transformErb('./tests/erbEngine.js.erb', testConfig)).toContain("var engine = 'erb'")
 })
 
-test('loads application rails from config', () => {
+test('user config - rails application', () => {
   var testConfig = { rails: true }
   expect(transformErb('./tests/configApplication.js.erb', testConfig)).toContain("var application = 'rails'")
+})
+
+test('user config - erubi compiler', () => {
+  var testConfig = { engine: 'erubi' }
+  expect(transformErb('./tests/erbEngine.js.erb', testConfig)).toContain("var engine = 'erubi'")
 })

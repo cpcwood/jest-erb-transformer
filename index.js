@@ -13,10 +13,13 @@ function loadConfig(filePath, jestConfig) {
   
   // User config
   var erbTransformers = jestConfig.transform.filter( e => e[1] == __filename )
-  var userConfig = erbTransformers.find( e => (new RegExp(e[0])).test(filePath) ).pop()
+  var userConfig = erbTransformers.find( e => (new RegExp(e[0])).test(filePath) )[2]
   if (userConfig.rails == true) {
     command = 'bin/rails'
     args.unshift('runner')
+  }
+  if (userConfig.engine == 'erubi') {
+    args.push('erubi')
   }
   
   var config = {

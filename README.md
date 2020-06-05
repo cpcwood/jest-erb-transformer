@@ -50,9 +50,10 @@ To add custom configuration, such as using the Ruby on Rails runner for ERB comp
 ```
 
 
-| Key | Default | Description |
+| Key | Default Value | Description |
 | :--- | :--- | :--- |
-| ```"rails"``` | ```false``` | Transformer uses 'ruby' command by default, set key to ```true``` to use ```bin/rails runner```. The ```"rails"``` option can be useful if the .erb files include variables such as ```Rails.application.credentails```.|
+| ```rails``` | ```false``` | Transformer uses 'ruby' command by default, set value to ```true``` to use ```bin/rails runner```. The ```"rails"``` option can be useful if the .erb files include variables such as ```Rails.application.credentails```. |
+| ```engine``` | ```'erb'``` | Transformer uses the ruby 'ERB' engine by default, to use the [Erubi](https://github.com/jeremyevans/erubi) engine set the value to ```'erubi'```. |
 
 
 ## License

@@ -1,7 +1,8 @@
 <%
-  def erbEngine
+  def erb_engine
+    return 'erubi' if defined?(Erubi)
     'erb'
   end
 %>
 
-var engine = '<%= erbEngine %>'
+var engine = '<%= erb_engine %>'
