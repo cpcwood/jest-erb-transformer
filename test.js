@@ -48,17 +48,17 @@ test('user config - erubi compiler', () => {
 // Warnings
 test('user config - invalid rails option entered', () => {
   var testConfig = { application: 'not-an-option' }
-  const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
+  var consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
   transformErb('./tests/helloWorld.js.erb', testConfig)
-  expect(consoleSpy).toHaveBeenLastCalledWith("User Configuration: application: 'not-an-option' is not a valid application option, using default 'ruby' instead")
+  expect(consoleSpy).toHaveBeenLastCalledWith("WARNING - User Configuration: \"application\": \"not-an-option\" is not a valid \"application\" option, using default \"ruby\" instead!")
   consoleSpy.mockRestore()
 })
 
 test('user config - invalid engine type entered', () => {
   var testConfig = { engine: 'not-an-engine' }
-  const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
+  var consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
   transformErb('./tests/erbEngine.js.erb', testConfig)
-  expect(consoleSpy).toHaveBeenLastCalledWith("User Configuration: engine: 'not-an-engine' is not a valid engine option, using default 'erb' instead")
+  expect(consoleSpy).toHaveBeenLastCalledWith("WARNING - User Configuration: \"engine\": \"not-an-engine\" is not a valid \"engine\" option, using default \"erb\" instead!")
   consoleSpy.mockRestore()
 })
 

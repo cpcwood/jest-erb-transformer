@@ -17,13 +17,13 @@ function loadConfig(filePath, jestConfig) {
     application = 'bin/rails'
     args.unshift('runner')
   } else if (userConfig.application && userConfig.application !== 'ruby') {
-    console.warn(`User Configuration: application: '${userConfig.application}' is not a valid application option, using default '${application}' instead`)
+    console.warn(`WARNING - User Configuration: "application": "${userConfig.application}" is not a valid "application" option, using default "${application}" instead!`)
   }
   if (userConfig.engine === 'erubi') {
     args.push('erubi')
   } else { 
     if (userConfig.engine && userConfig.engine !== 'erb') {
-      console.warn(`User Configuration: engine: '${userConfig.engine}' is not a valid engine option, using default '${engine}' instead`)
+      console.warn(`WARNING - User Configuration: "engine": "${userConfig.engine}" is not a valid "engine" option, using default "${engine}" instead!`)
     }
     args.push(engine)
   }
