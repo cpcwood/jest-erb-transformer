@@ -20,7 +20,7 @@ function loadConfig(filePath, jestConfig) {
   // Load user config
   var erbTransformers = jestConfig.transform.filter( e => e[1] === __filename )
   var userConfig = erbTransformers.find( e => (new RegExp(e[0])).test(filePath) )[2]
-  if (userConfig == undefined) {
+  if (userConfig === undefined) {
     console.warn(`WARNING - User Configuration could not be loaded, please check configuration is correct and report to the maintainers!`)
   } else {
     var configKeys = ["application", "engine", "timeout"]
@@ -36,7 +36,7 @@ function loadConfig(filePath, jestConfig) {
     } else if (userConfig.engine && userConfig.engine !== config.args.engine) {
       console.warn(`WARNING - User Configuration: "engine": "${userConfig.engine}" is not a valid "engine" value, using default "${config.args.engine}" instead!`)
     }
-    if (typeof userConfig.timeout == 'number') {
+    if (typeof userConfig.timeout === 'number') {
       config.timeout = userConfig.timeout
     } else if (userConfig.timeout) {
       console.warn(`WARNING - User Configuration: "timeout": "${userConfig.timeout}" is not a valid "timeout" value, using default "${config.timeout}" instead!`)
@@ -72,7 +72,7 @@ function erbTransformer(fileContent, filePath, config) {
     if (child.error && child.error.code == 'ETIMEDOUT') {
       throw(`Compilation of '${filePath}' timed out after ${config.timeout}ms!`)
     } else {
-      throw(`Error compiling '${filePath}',  status: '${child.status}', signal: '${child.signal}'!`)
+      throw(`Error compiling '${filePath}',  status: '${child.status}', signal: '${child.signal}', error: ${child.error}!`)
     }
   }
   var compiledFile = bufferToString(child.stdout, config.args.delimiter)

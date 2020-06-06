@@ -88,7 +88,3 @@ test('user config - could not be loaded', () => {
   expect(consoleSpy).toHaveBeenLastCalledWith("WARNING - User Configuration could not be loaded, please check configuration is correct and report to the maintainers!")
   consoleSpy.mockRestore()
 })
-
-// timeout incorrect type
-
-// Errors
