@@ -5,18 +5,17 @@ const { process } = require('./index')
 var path = require('path')
 
 
-function transformErb (filePath, testConfiguration) {
+function transformErb (filePath, testConfiguration = {}) {
   var jestConfig = {
     transform: [
-      [
-        '\\.js\\.ab$',
-        path.join(__dirname, 'index.js'),
-        { 'rails': 'false' }
-      ],
       [
         '\\.js.erb$',
         path.join(__dirname, 'index.js'),
         testConfiguration
+      ],
+      [
+        '\\.na\\.erb$',
+        path.join(__dirname, 'index.js')
       ]
     ]
   }
@@ -26,13 +25,11 @@ function transformErb (filePath, testConfiguration) {
 
 // Features
 test('compiles a simple file', () => {
-  var testConfig = {}
-  expect(transformErb('./tests/helloWorld.js.erb', testConfig)).toEqual("var helloWorld = 'Hello World'")
+  expect(transformErb('./tests/helloWorld.js.erb')).toEqual("var helloWorld = 'Hello World'")
 })
 
 test('compiles a file with the ruby erb engine', () => {
-  var testConfig = {}
-  expect(transformErb('./tests/erbEngine.js.erb', testConfig)).toEqual("\nvar engine = 'erb'")
+  expect(transformErb('./tests/erbEngine.js.erb')).toEqual("\nvar engine = 'erb'")
 })
 
 test('user config - rails application', () => {
@@ -82,6 +79,13 @@ test('user config - invalid timeout type entered', () => {
   var consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
   transformErb('./tests/erbEngine.js.erb', testConfig)
   expect(consoleSpy).toHaveBeenLastCalledWith("WARNING - User Configuration: \"timeout\": \"not-an-number\" is not a valid \"timeout\" value, using default \"5000\" instead!")
+  consoleSpy.mockRestore()
+})
+
+test('user config - could not be loaded', () => {
+  var consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
+  transformErb('./tests/configNotLoaded.na.erb')
+  expect(consoleSpy).toHaveBeenLastCalledWith("WARNING - User Configuration could not be loaded, please check configuration is correct and report to the maintainers!")
   consoleSpy.mockRestore()
 })
 

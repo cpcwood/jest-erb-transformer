@@ -29,7 +29,7 @@ Ensure the following is included in the project ```package.json``` jest key:
 ```json
 "moduleFileExtensions": [
   "js",
-  "js.erb"
+  "erb"
 ],
 ```
 
@@ -38,6 +38,8 @@ Ensure the following is included in the project ```package.json``` jest key:
   "\\.js\\.erb$": "jest-erb-transformer"
 }
 ```
+
+See the (Jest docs)[https://jestjs.io/docs/en/configuration#transform-objectstring-pathtotransformer--pathtotransformer-object] for more information on the configuration of transformers.
 
 ### Options
 

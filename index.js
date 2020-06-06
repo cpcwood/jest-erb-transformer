@@ -20,29 +20,33 @@ function loadConfig(filePath, jestConfig) {
   // Load user config
   var erbTransformers = jestConfig.transform.filter( e => e[1] === __filename )
   var userConfig = erbTransformers.find( e => (new RegExp(e[0])).test(filePath) )[2]
-  var configKeys = ["application", "engine", "timeout"]
-  Object.keys(userConfig).forEach( key => {
-    if (!configKeys.includes(key)) {
-      console.warn(`WARNING - User Configuration: "${key}" is not a valid configuration key and will be ignored!`)
-    }
-  })
+  if (userConfig == undefined) {
+    console.warn(`WARNING - User Configuration could not be loaded, please check configuration is correct and report to the maintainers!`)
+  } else {
+    var configKeys = ["application", "engine", "timeout"]
+    Object.keys(userConfig).forEach( key => {
+      if (!configKeys.includes(key)) {
+        console.warn(`WARNING - User Configuration: "${key}" is not a valid configuration key and will be ignored!`)
+      }
+    })
 
-  // Apply user config
-  if (userConfig.engine === 'erubi') {
-    config.args.engine = 'erubi'
-  } else if (userConfig.engine && userConfig.engine !== config.args.engine) {
-    console.warn(`WARNING - User Configuration: "engine": "${userConfig.engine}" is not a valid "engine" value, using default "${config.args.engine}" instead!`)
-  }
-  if (typeof userConfig.timeout == 'number') {
-    config.timeout = userConfig.timeout
-  } else if (userConfig.timeout) {
-    console.warn(`WARNING - User Configuration: "timeout": "${userConfig.timeout}" is not a valid "timeout" value, using default "${config.timeout}" instead!`)
-  }
-  if (userConfig.application === 'rails') {
-    config.application = 'bin/rails'
-    config.args.runner = 'runner'
-  } else if (userConfig.application && userConfig.application !== config.application) {
-    console.warn(`WARNING - User Configuration: "application": "${userConfig.application}" is not a valid "application" value, using default "${config.application}" instead!`)
+    // Apply user config
+    if (userConfig.engine === 'erubi') {
+      config.args.engine = 'erubi'
+    } else if (userConfig.engine && userConfig.engine !== config.args.engine) {
+      console.warn(`WARNING - User Configuration: "engine": "${userConfig.engine}" is not a valid "engine" value, using default "${config.args.engine}" instead!`)
+    }
+    if (typeof userConfig.timeout == 'number') {
+      config.timeout = userConfig.timeout
+    } else if (userConfig.timeout) {
+      console.warn(`WARNING - User Configuration: "timeout": "${userConfig.timeout}" is not a valid "timeout" value, using default "${config.timeout}" instead!`)
+    }
+    if (userConfig.application === 'rails') {
+      config.application = 'bin/rails'
+      config.args.runner = 'runner'
+    } else if (userConfig.application && userConfig.application !== config.application) {
+      console.warn(`WARNING - User Configuration: "application": "${userConfig.application}" is not a valid "application" value, using default "${config.application}" instead!`)
+    }
   }
 
   return config
