@@ -1,10 +1,10 @@
 # Jest ERB Transformer
 
+![npm-version](https://img.shields.io/npm/v/jest-erb-transformer?color=blueviolet&style=flat-square) ![weekly-downloads](https://img.shields.io/npm/dw/jest-erb-transformer?style=flat-square)
+
 ## Overview 
 
-Jest transformer for compiling Embedded Ruby template JavaScript files (.js.erb) for use in the Jest JavaScript testing framework.
-
-Developed with Jest version 1.22.4
+Custom transformer for compiling Embedded Ruby template JavaScript files (.js.erb) for use in the Jest JavaScript testing framework.
 
 ## Install
 
@@ -39,7 +39,7 @@ Ensure the following is included in the project ```package.json``` jest key:
 }
 ```
 
-See the (Jest docs)[https://jestjs.io/docs/en/configuration#transform-objectstring-pathtotransformer--pathtotransformer-object] for more information on the configuration of transformers.
+See the [Jest docs](https://jestjs.io/docs/en/configuration#transform-objectstring-pathtotransformer--pathtotransformer-object) for more information on the configuration of transformers.
 
 ### Options
 
@@ -51,13 +51,13 @@ To add custom configuration, such as using the Ruby on Rails runner for ERB comp
 }
 ```
 
+**Note:** Default options will be applied automatically.
+
 | Key | Default Value | Description |
 | :--- | :--- | :--- |
 | ```"application"``` | ```"ruby"``` | Transformer is run using ```ruby``` by default, set value to ```"rails"``` to use ```bin/rails runner```. The ```"rails"``` option can be useful if the .erb files include Ruby on Rails specific environment variables such as ```Rails.application.credentails```. |
 | ```"engine"``` | ```"erb"``` | Transformer uses the ruby 'ERB' engine by default, to use the [Erubi](https://github.com/jeremyevans/erubi) engine set the value to ```"erubi"```. |
-| ```"timeout"``` | ```5000``` | Set timeout duration in ms for the compilation of individual files |
-
-Note: Default options will be applied automatically.
+| ```"timeout"``` | ```5000``` | Set the timeout duration in milliseconds for the compilation of individual files (value type: number). |
 
 ## License
 
