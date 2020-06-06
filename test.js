@@ -27,22 +27,22 @@ function transformErb (filePath, testConfiguration) {
 // Features
 test('compiles a simple file', () => {
   var testConfig = {}
-  expect(transformErb('./tests/helloWorld.js.erb', testConfig)).toContain("var helloWorld = 'Hello World'")
+  expect(transformErb('./tests/helloWorld.js.erb', testConfig)).toEqual("var helloWorld = 'Hello World'")
 })
 
 test('compiles a file with the ruby erb engine', () => {
   var testConfig = {}
-  expect(transformErb('./tests/erbEngine.js.erb', testConfig)).toContain("var engine = 'erb'")
+  expect(transformErb('./tests/erbEngine.js.erb', testConfig)).toEqual("\nvar engine = 'erb'")
 })
 
 test('user config - rails application', () => {
   var testConfig = { "application": "rails" }
-  expect(transformErb('./tests/configApplication.js.erb', testConfig)).toContain("var application = 'rails'")
+  expect(transformErb('./tests/configApplication.js.erb', testConfig)).toEqual("var application = 'rails'")
 })
 
 test('user config - erubi compiler', () => {
   var testConfig = { "engine": "erubi" }
-  expect(transformErb('./tests/erbEngine.js.erb', testConfig)).toContain("var engine = 'erubi'")
+  expect(transformErb('./tests/erbEngine.js.erb', testConfig)).toEqual("var engine = 'erubi'")
 })
 
 test('user config - timeout', () => {

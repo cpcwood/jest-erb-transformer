@@ -5,12 +5,17 @@ var path = require('path')
 
 function loadConfig(filePath, jestConfig) {
   // Default Config
-  var application = 'ruby'
-  var engine = 'erb'
-  var delimiter = '__JEST_ERB_TRANSFORMER__'
-  var timeout = 5000
-  var rubyTransformerPath = path.join(__dirname, 'erb_transformer.rb')
-  var args = [ rubyTransformerPath, engine, delimiter ]
+  var config = {
+    application: 'ruby',
+    args: {
+      runner: undefined,
+      transformer: path.join(__dirname, 'erb_transformer.rb'),
+      engine: 'erb',
+      delimiter: '__JEST_ERB_TRANSFORMER__'
+    },
+    timeout: 5000,
+    stdio: ['pipe', 'pipe', process.stderr]
+  }
 
   // Load user config
   var erbTransformers = jestConfig.transform.filter( e => e[1] === __filename )
@@ -24,49 +29,49 @@ function loadConfig(filePath, jestConfig) {
 
   // Apply user config
   if (userConfig.engine === 'erubi') {
-    args[1] = 'erubi'
-  } else if (userConfig.engine && userConfig.engine !== engine) {
-    console.warn(`WARNING - User Configuration: "engine": "${userConfig.engine}" is not a valid "engine" value, using default "${engine}" instead!`)
+    config.args.engine = 'erubi'
+  } else if (userConfig.engine && userConfig.engine !== config.args.engine) {
+    console.warn(`WARNING - User Configuration: "engine": "${userConfig.engine}" is not a valid "engine" value, using default "${config.args.engine}" instead!`)
   }
   if (typeof userConfig.timeout == 'number') {
-    timeout = userConfig.timeout
+    config.timeout = userConfig.timeout
   } else if (userConfig.timeout) {
-    console.warn(`WARNING - User Configuration: "timeout": "${userConfig.timeout}" is not a valid "timeout" value, using default "${timeout}" instead!`)
+    console.warn(`WARNING - User Configuration: "timeout": "${userConfig.timeout}" is not a valid "timeout" value, using default "${config.timeout}" instead!`)
   }
   if (userConfig.application === 'rails') {
-    application = 'bin/rails'
-    args.unshift('runner')
-  } else if (userConfig.application && userConfig.application !== application) {
-    console.warn(`WARNING - User Configuration: "application": "${userConfig.application}" is not a valid "application" value, using default "${application}" instead!`)
+    config.application = 'bin/rails'
+    config.args.runner = 'runner'
+  } else if (userConfig.application && userConfig.application !== config.application) {
+    console.warn(`WARNING - User Configuration: "application": "${userConfig.application}" is not a valid "application" value, using default "${config.application}" instead!`)
   }
-  
-  var config = {
-    command: application,
-    arguments: args,
-    timeout: timeout
-  }
+
   return config
+}
+
+function bufferToString(transformerOutput, delimiter) {
+  var stringOutput = transformerOutput.toString()
+  var fileContentRegex = new RegExp(`${delimiter}([\\s\\S]+)${delimiter}`)
+  return stringOutput.match(fileContentRegex)[1]
 }
 
 function erbTransformer(fileContent, filePath, config) {
   var child = childProcess.spawnSync(
-    config.command,
-    config.arguments,
+    config.application,
+    Object.values(config.args).filter( e => e !== undefined ),
     { 
-      stdio: ['pipe', 'pipe', process.stderr],
-      input: fileContent,
-      timeout: config.timeout
+      timeout: config.timeout,
+      stdio: config.stdio,
+      input: fileContent
     }
   )
-  // console.log(child)
-  if (child.signal !== null) {
-    if (child.error.code == 'ETIMEDOUT') {
+  if (child.status !== 0) {
+    if (child.error && child.error.code == 'ETIMEDOUT') {
       throw(`Compilation of '${filePath}' timed out after ${config.timeout}ms!`)
     } else {
-      throw(`Error compiling '${filePath}', signal: '${child.signal}', code: '${child.error.code}'!`)
+      throw(`Error compiling '${filePath}',  status: '${child.status}', signal: '${child.signal}'!`)
     }
   }
-  var compiledFile = child.stdout.toString()
+  var compiledFile = bufferToString(child.stdout, config.args.delimiter)
   return compiledFile
 }
 
