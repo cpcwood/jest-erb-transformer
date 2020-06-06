@@ -7,9 +7,10 @@ function loadConfig(filePath, jestConfig) {
   // Default Config
   var application = 'ruby'
   var engine = 'erb'
+  var delimiter = '__JEST_ERB_TRANSFORMER__'
   var timeout = 5000
   var rubyTransformerPath = path.join(__dirname, 'erb_transformer.rb')
-  var args = [ rubyTransformerPath ]
+  var args = [ rubyTransformerPath, engine, delimiter ]
 
   // Load user config
   var erbTransformers = jestConfig.transform.filter( e => e[1] === __filename )
@@ -22,22 +23,21 @@ function loadConfig(filePath, jestConfig) {
   })
 
   // Apply user config
+  if (userConfig.engine === 'erubi') {
+    args[1] = 'erubi'
+  } else if (userConfig.engine && userConfig.engine !== engine) {
+    console.warn(`WARNING - User Configuration: "engine": "${userConfig.engine}" is not a valid "engine" value, using default "${engine}" instead!`)
+  }
+  if (typeof userConfig.timeout == 'number') {
+    timeout = userConfig.timeout
+  } else if (userConfig.timeout) {
+    console.warn(`WARNING - User Configuration: "timeout": "${userConfig.timeout}" is not a valid "timeout" value, using default "${timeout}" instead!`)
+  }
   if (userConfig.application === 'rails') {
     application = 'bin/rails'
     args.unshift('runner')
-  } else if (userConfig.application && userConfig.application !== 'ruby') {
+  } else if (userConfig.application && userConfig.application !== application) {
     console.warn(`WARNING - User Configuration: "application": "${userConfig.application}" is not a valid "application" value, using default "${application}" instead!`)
-  }
-  if (userConfig.engine === 'erubi') {
-    args.push('erubi')
-  } else { 
-    if (userConfig.engine && userConfig.engine !== 'erb') {
-      console.warn(`WARNING - User Configuration: "engine": "${userConfig.engine}" is not a valid "engine" value, using default "${engine}" instead!`)
-    }
-    args.push(engine)
-  }
-  if (userConfig.timeout && typeof userConfig.timeout == 'number') {
-    timeout = userConfig.timeout
   }
   
   var config = {

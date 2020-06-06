@@ -77,6 +77,14 @@ test('user config - invalid engine type entered', () => {
   consoleSpy.mockRestore()
 })
 
+test('user config - invalid timeout type entered', () => {
+  var testConfig = { "timeout": 'not-an-number' }
+  var consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
+  transformErb('./tests/erbEngine.js.erb', testConfig)
+  expect(consoleSpy).toHaveBeenLastCalledWith("WARNING - User Configuration: \"timeout\": \"not-an-number\" is not a valid \"timeout\" value, using default \"5000\" instead!")
+  consoleSpy.mockRestore()
+})
+
 // timeout incorrect type
 
 // Errors
