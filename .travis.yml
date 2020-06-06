@@ -1,0 +1,19 @@
+language: node_js
+cache:
+  yarn: true
+node_js:
+  - "12"
+install:
+  - gem install bundler -v 2.1.4
+  - bundle install
+  - npm install
+script:
+  - yarn test --no-cache
+deploy:
+  provider: npm
+  email:
+    secure: "OLsZlbIiNvdC2WwT+PserWHzU9iMu3FVg3ZuaQuA19csfHUnqChY7hu9Koh7NkpFMzObNJdMRbWya8MvGSXUMYy7HMlZhv4FDsNu5WWoSM52NlmY2PeDA2/7Bl2errbImSptkG91heHK+FFjqts0DR2MEuFItF9FKn/me9SIhdgHkak6HwaB//4uAvUaFA1QjITH7ZluYxtlHnsA8/SC1FsmE5qAZGB7RK83xgwvXr0CpyjjhxhYfu84ZwfKJzAmeRWQonVvIEZXFKcBMDClO7kkxJpSdhE2JjEDWPVl23MDO623KO1N/buYw3cBmHmz9LoAH5Vks3WAYeH16xB4SuHRbtsZMPWBMTkyELWVv6wS7BApb07rWq8YAO0A1yKBwBcSYInGOuDv/tyeIxsIfda3+EcpqS2SpnZKCthCNOBVc8quV1DWZRKe1OZJykpkrws2iJ0bNhPgLAed9QjaL1gBVbJGeCbtfVphPA2dnnYp8uZjRlYYCcDuNJJWekOA4R3ax/iMHHvZdzqSJ8hKklwgRcO+D1ExESuYvqQGbE/goAD0UsiLSKmUjXD79v72esEen7hSqDxLnlKMuYuS6VPS0qJZZYJW0BmoevxIZhvWehjQ4qr5erxeKw/7Lsib7TvmY1BzowRkWgTbLfzxGw7k9JofDwjD16edYqqufeg="
+  api_key:
+    secure: "B+UhEmObCITPfqZwpGpZ3X2eM+asGj0mwx18T61I2W/k4FmTHZLksaGsJeDrZDXc+Plzc0U5tjKpczzWX5CLCiOpJz4WL/19/rDCTSVuKDslFuJq/C0xBJZmFjJegA34EcQP7LLCyjFmpesdcmgp8bbFjFVWNZzDh8aepi/BYRbP/qrfGNPyQUz/HuaN/4FVj5MHrYyp/BrZG1UD7bI5opMuXP0ZLe8HdDUZ02KcXrYg4ptDF9UnpRK4En5vMjT62xajozMxMfBHfgWQGHDwB+IIde43xwTR2WUBpyorHrGAn7DxfsGaK4+5YHuknR3zjXzHQM8pqpFXZmwZVy5CalCHZxLpySx6OjyV/lDlvmwtxUs0s0Rh+oRb6PMTo/gKF6RVxrEGprv6fV4v/fDy86+quvA0n9EGmHBSse/dD9pIVdbvRLFyoaE+qjIRZt0CI+2LUu0M2yLqvBWGc/WBhg0kT0+n0WkvDJw2XQfUBCT1JAKzl/bJld4qjGsmtGMBbgZ5ltUp8f8RmtJsuYGZFhu897f53F1Kp0JrQSht1lpn1tsBExJEGW/EiB4XjW7A5fXa5KyA8OPL3JXnmfl4KjUALRX5PbJ5JrQBqWgfD3833t6F81SdafBexlqezypj36mu/P4Mb2vrHbMsX5giQOj2ThYzKJVZFVBQaotqCoA="
+  on:
+    branch: master
