@@ -4,7 +4,7 @@
 
 ## Overview 
 
-Custom transformer for compiling Embedded Ruby template JavaScript files (.js.erb) for use in the Jest JavaScript testing framework.
+Custom Jest transformer for compiling Embedded Ruby template files (```.erb```) for use in the Jest JavaScript testing framework.
 
 ## Install
 
