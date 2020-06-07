@@ -46,7 +46,11 @@ test('user config - timeout', () => {
   var testConfig = { "timeout": 450 }
   expect( () => {
     transformErb('./tests/configSleep500.js.erb', testConfig)
-  }).toThrow(`Compilation of './tests/configSleep500.js.erb' timed out after 450ms!`)
+  }).toThrow("Compilation of './tests/configSleep500.js.erb' timed out after 450ms!")
+})
+
+test('empty file', () => {
+  expect(transformErb('./tests/emptyFile.js.erb')).toEqual("")
 })
 
 // Warnings
@@ -88,3 +92,5 @@ test('user config - could not be loaded', () => {
   expect(consoleSpy).toHaveBeenLastCalledWith("WARNING - User Configuration could not be loaded, please check configuration is correct and report to the maintainers!")
   consoleSpy.mockRestore()
 })
+
+// Errors

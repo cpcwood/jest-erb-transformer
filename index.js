@@ -54,7 +54,7 @@ function loadConfig(filePath, jestConfig) {
 
 function bufferToString(transformerOutput, delimiter) {
   var stringOutput = transformerOutput.toString()
-  var fileContentRegex = new RegExp(`${delimiter}([\\s\\S]+)${delimiter}`)
+  var fileContentRegex = new RegExp(`${delimiter}([\\s\\S]*)${delimiter}`)
   return stringOutput.match(fileContentRegex)[1]
 }
 
