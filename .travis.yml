@@ -6,7 +6,7 @@ node_js:
 install:
   - gem install bundler -v 2.1.4
   - bundle install
-  - npm install
+  - yarn install
 script:
   - yarn test
   - yarn eslint --fix
