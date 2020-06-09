@@ -4,7 +4,7 @@ const path = require('path')
 const childProcess = require('child_process')
 
 function transformErb (filePath, testConfiguration = {}) {
-  var jestConfig = {
+  const jestConfig = {
     transform: [
       [
         '\\.js.erb$',
@@ -17,7 +17,7 @@ function transformErb (filePath, testConfiguration = {}) {
       ]
     ]
   }
-  var fileContent = fs.readFileSync(filePath).toString()
+  const fileContent = fs.readFileSync(filePath).toString()
   return process(fileContent, filePath, jestConfig)
 }
 
@@ -40,17 +40,17 @@ test('compiles a file with the ruby erb engine', () => {
 })
 
 test('user config - rails application', () => {
-  var testConfig = { application: 'rails' }
+  const testConfig = { application: 'rails' }
   expect(transformErb('./tests/configApplication.js.erb', testConfig)).toEqual("var application = 'rails'")
 })
 
 test('user config - erubi compiler', () => {
-  var testConfig = { engine: 'erubi' }
+  const testConfig = { engine: 'erubi' }
   expect(transformErb('./tests/erbEngine.js.erb', testConfig)).toEqual("var engine = 'erubi'")
 })
 
 test('user config - timeout', () => {
-  var testConfig = { timeout: 450 }
+  const testConfig = { timeout: 450 }
   expect(() => {
     transformErb('./tests/configSleep500.js.erb', testConfig)
   }).toThrow("Compilation of './tests/configSleep500.js.erb' timed out after 450ms!")
@@ -58,35 +58,35 @@ test('user config - timeout', () => {
 
 // Warnings
 test('user config - warning - invalid configuration key entered', () => {
-  var testConfig = { 'not-a-key': 'value' }
-  var consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
+  const testConfig = { 'not-a-key': 'value' }
+  const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
   transformErb('./tests/helloWorld.js.erb', testConfig)
   expect(consoleSpy).toHaveBeenLastCalledWith('WARNING - User Configuration: "not-a-key" is not a valid configuration key and will be ignored!')
 })
 
 test('user config - warning - invalid rails option entered', () => {
-  var testConfig = { application: 'not-a-value' }
-  var consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
+  const testConfig = { application: 'not-a-value' }
+  const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
   transformErb('./tests/helloWorld.js.erb', testConfig)
-  expect(consoleSpy).toHaveBeenLastCalledWith('WARNING - User Configuration: "application": "not-a-value" is not a valid "application" value, using default "ruby" instead!')
+  expect(consoleSpy).toHaveBeenLastCalledWith('WARNING - User Configuration: "application": "not-a-value" is not a valid "application" value, using default value instead!')
 })
 
 test('user config - warning - invalid engine type entered', () => {
-  var testConfig = { engine: 'not-an-engine' }
-  var consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
+  const testConfig = { engine: 'not-an-engine' }
+  const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
   transformErb('./tests/erbEngine.js.erb', testConfig)
-  expect(consoleSpy).toHaveBeenLastCalledWith('WARNING - User Configuration: "engine": "not-an-engine" is not a valid "engine" value, using default "erb" instead!')
+  expect(consoleSpy).toHaveBeenLastCalledWith('WARNING - User Configuration: "engine": "not-an-engine" is not a valid "engine" value, using default value instead!')
 })
 
 test('user config - warning - invalid timeout type entered', () => {
-  var testConfig = { timeout: 'not-an-number' }
-  var consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
+  const testConfig = { timeout: 'not-an-number' }
+  const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
   transformErb('./tests/erbEngine.js.erb', testConfig)
-  expect(consoleSpy).toHaveBeenLastCalledWith('WARNING - User Configuration: "timeout": "not-an-number" is not a valid "timeout" value, using default "5000" instead!')
+  expect(consoleSpy).toHaveBeenLastCalledWith('WARNING - User Configuration: "timeout": "not-an-number" is not a valid "timeout" value, using default value instead!')
 })
 
 test('user config - warning - could not be loaded', () => {
-  var consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
+  const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
   transformErb('./tests/configNotLoaded.na.erb')
   expect(consoleSpy).toHaveBeenLastCalledWith('WARNING - User Configuration could not be loaded, please check configuration is correct and report to the maintainers!')
 })
