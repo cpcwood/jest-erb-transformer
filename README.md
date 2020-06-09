@@ -24,7 +24,7 @@ yarn add jest-erb-transformer
 
 ### Jest Configuration
 
-Ensure the following is included in the project ```package.json``` jest key:
+Ensure the ```"erb"``` file extension and jest-erb-transformer extension matcher and configuration is included in the project's ```package.json``` jest key:
 
 ```json
 "moduleFileExtensions": [
@@ -51,13 +51,11 @@ To add custom configuration, such as using the Ruby on Rails runner for ERB comp
 }
 ```
 
-**Note:** Default options will be applied automatically.
-
 | Key | Default Value | Description |
 | :--- | :--- | :--- |
 | ```"application"``` | ```"ruby"``` | Transformer is run using ```ruby``` by default, set value to ```"rails"``` to use ```bin/rails runner```. The ```"rails"``` option can be useful if the .erb files include Ruby on Rails specific environment variables such as ```Rails.application.credentails```. |
 | ```"engine"``` | ```"erb"``` | Transformer uses the ruby 'ERB' engine by default, to use the [Erubi](https://github.com/jeremyevans/erubi) engine set the value to ```"erubi"```. |
-| ```"timeout"``` | ```5000``` | Set the timeout duration in milliseconds for the compilation of individual files (value type: number). |
+| ```"timeout"``` | ```"5000"``` | Set the timeout duration in milliseconds for the compilation of individual files. |
 
 ## License
 
