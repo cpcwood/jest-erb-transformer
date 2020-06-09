@@ -4,7 +4,8 @@
   "description": "Jest transformer for Embedded Ruby (`.erb`) files in Ruby projects",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --no-cache --coverage",
+    "coveralls": "cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,7 @@
   },
   "homepage": "https://github.com/cpcwood/jest-erb-transformer#readme",
   "devDependencies": {
+    "coveralls": "^3.1.0",
     "jest": "^26.0.1"
   }
 }

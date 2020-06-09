@@ -8,7 +8,8 @@ install:
   - bundle install
   - npm install
 script:
-  - yarn test --no-cache
+  - yarn test
+  - yarn coveralls
 deploy:
   provider: npm
   email:
