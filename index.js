@@ -1,9 +1,7 @@
-"use strict"
+const childProcess = require('child_process')
+const path = require('path')
 
-var childProcess = require('child_process')
-var path = require('path')
-
-function loadConfig(filePath, jestConfig) {
+function loadConfig (filePath, jestConfig) {
   // Default Config
   var config = {
     application: 'ruby',
@@ -18,13 +16,13 @@ function loadConfig(filePath, jestConfig) {
   }
 
   // Load user config
-  var erbTransformers = jestConfig.transform.filter( e => e[1] === __filename )
-  var userConfig = erbTransformers.find( e => (new RegExp(e[0])).test(filePath) )[2]
+  var erbTransformers = jestConfig.transform.filter(e => e[1] === __filename)
+  var userConfig = erbTransformers.find(e => (new RegExp(e[0])).test(filePath))[2]
   if (userConfig === undefined) {
-    console.warn(`WARNING - User Configuration could not be loaded, please check configuration is correct and report to the maintainers!`)
+    console.warn('WARNING - User Configuration could not be loaded, please check configuration is correct and report to the maintainers!')
   } else {
-    var configKeys = ["application", "engine", "timeout"]
-    Object.keys(userConfig).forEach( key => {
+    var configKeys = ['application', 'engine', 'timeout']
+    Object.keys(userConfig).forEach(key => {
       if (!configKeys.includes(key)) {
         console.warn(`WARNING - User Configuration: "${key}" is not a valid configuration key and will be ignored!`)
       }
@@ -52,27 +50,27 @@ function loadConfig(filePath, jestConfig) {
   return config
 }
 
-function bufferToString(transformerOutput, delimiter) {
+function bufferToString (transformerOutput, delimiter) {
   var stringOutput = transformerOutput.toString()
   var fileContentRegex = new RegExp(`${delimiter}([\\s\\S]*)${delimiter}`)
   return stringOutput.match(fileContentRegex)[1]
 }
 
-function erbTransformer(fileContent, filePath, config) {
+function erbTransformer (fileContent, filePath, config) {
   var child = childProcess.spawnSync(
     config.application,
-    Object.values(config.args).filter( e => e !== undefined ),
-    { 
+    Object.values(config.args).filter(e => e !== undefined),
+    {
       timeout: config.timeout,
       stdio: config.stdio,
       input: fileContent
     }
   )
   if (child.status !== 0) {
-    if (child.error && child.error.code == 'ETIMEDOUT') {
-      throw(`Compilation of '${filePath}' timed out after ${config.timeout}ms!`)
+    if (child.error && child.error.code === 'ETIMEDOUT') {
+      throw new Error(`Compilation of '${filePath}' timed out after ${config.timeout}ms!`)
     } else {
-      throw(`Error compiling '${filePath}',  status: '${child.status}', signal: '${child.signal}', error: ${child.error}!`)
+      throw new Error(`Error compiling '${filePath}',  status: '${child.status}', signal: '${child.signal}', error: ${child.error}!`)
     }
   }
   var compiledFile = bufferToString(child.stdout, config.args.delimiter)
@@ -80,7 +78,7 @@ function erbTransformer(fileContent, filePath, config) {
 }
 
 module.exports = {
-  process(fileContent, filePath, jestConfig) {
+  process (fileContent, filePath, jestConfig) {
     var config = loadConfig(filePath, jestConfig)
     return String(erbTransformer(fileContent, filePath, config))
   }

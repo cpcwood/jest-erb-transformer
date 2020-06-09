@@ -9,6 +9,7 @@ install:
   - npm install
 script:
   - yarn test
+  - yarn eslint --fix
   - yarn coveralls
 deploy:
   provider: npm
