@@ -1,6 +1,6 @@
 # Jest ERB Transformer
 
-![npm-version](https://img.shields.io/npm/v/jest-erb-transformer?color=blueviolet&style=flat-square) ![weekly-downloads](https://img.shields.io/npm/dw/jest-erb-transformer?style=flat-square) ![build-status](https://img.shields.io/travis/com/cpcwood/jest-erb-transformer?style=flat-square)
+![npm-version](https://img.shields.io/npm/v/jest-erb-transformer?color=blueviolet&style=flat-square) ![weekly-downloads](https://img.shields.io/npm/dw/jest-erb-transformer?style=flat-square) ![build-status](https://img.shields.io/travis/com/cpcwood/jest-erb-transformer?style=flat-square) ![code-coverage](https://img.shields.io/coveralls/github/cpcwood/jest-erb-transformer?style=flat-square)
 
 ## Overview 
 
