@@ -1,6 +1,6 @@
 {
   "name": "jest-erb-transformer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Jest transformer for Embedded Ruby (`.erb`) files in Ruby projects",
   "main": "index.js",
   "scripts": {

@@ -35,7 +35,7 @@ Ensure the ```"erb"``` file extension and jest-erb-transformer extension matcher
 
 ```json
 "transform": {
-  "\\.js\\.erb$": "jest-erb-transformer"
+  "^.+\\.erb$": "jest-erb-transformer"
 }
 ```
 
@@ -47,7 +47,7 @@ To add custom configuration, such as using the Ruby on Rails runner for ERB comp
 
 ```json
 "transform": {
-  "\\.js\\.erb$": [ "jest-erb-transformer", { "application": "rails" } ]
+  "^.+\\.erb$": [ "jest-erb-transformer", { "application": "rails" } ]
 }
 ```
 
