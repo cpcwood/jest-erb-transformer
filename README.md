@@ -11,13 +11,13 @@ Custom Jest transformer for compiling Embedded Ruby template files (```.erb```) 
 Add to project using npm:
 
 ```sh
-npm install jest-erb-transformer
+npm install jest-erb-transformer --save-dev
 ```
 
 Add to project using Yarn:
 
 ```sh
-yarn add jest-erb-transformer
+yarn add jest-erb-transformer --dev
 ```
 
 ## Configuration
