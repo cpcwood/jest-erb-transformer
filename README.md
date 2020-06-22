@@ -1,10 +1,10 @@
 # Jest ERB Transformer
 
-[![npm-version](https://img.shields.io/npm/v/jest-erb-transformer.svg?color=blueviolet&style=flat-square)](https://www.npmjs.com/package/jest-erb-transformer) [![weekly-downloads](https://img.shields.io/npm/dw/jest-erb-transformer.svg?style=flat-square)](https://www.npmjs.com/package/jest-erb-transformer) [![build-status](https://img.shields.io/travis/com/cpcwood/jest-erb-transformer.svg?style=flat-square)](https://travis-ci.com/github/cpcwood/jest-erb-transformer) [![code-coverage](https://img.shields.io/coveralls/github/cpcwood/jest-erb-transformer.svg?style=flat-square)](https://coveralls.io/github/cpcwood/jest-erb-transformer) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](https://standardjs.com)
+[![npm-version](https://img.shields.io/npm/v/jest-erb-transformer.svg?color=blueviolet&style=flat-square)](https://www.npmjs.com/package/jest-erb-transformer) [![build-status](https://img.shields.io/travis/com/cpcwood/jest-erb-transformer.svg?style=flat-square)](https://travis-ci.com/github/cpcwood/jest-erb-transformer) [![code-coverage](https://img.shields.io/coveralls/github/cpcwood/jest-erb-transformer.svg?style=flat-square)](https://coveralls.io/github/cpcwood/jest-erb-transformer) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](https://standardjs.com)
 
 ## Overview 
 
-Custom Jest transformer for compiling Embedded Ruby template files (```.erb```) for use in the Jest JavaScript testing framework.
+Custom transformer for compiling Embedded Ruby template files (```.erb```) for use in the Jest JavaScript testing framework.
 
 ## Install
 
@@ -24,7 +24,7 @@ yarn add jest-erb-transformer --dev
 
 ### Jest Configuration
 
-Ensure the ```"erb"``` file extension and jest-erb-transformer extension matcher and configuration is included in the project's ```package.json``` jest key:
+Ensure the ```"erb"``` file extension and the jest-erb-transformer extension matcher and configuration is included in the project's ```package.json``` jest key:
 
 ```json
 "moduleFileExtensions": [
@@ -43,7 +43,7 @@ See the [Jest docs](https://jestjs.io/docs/en/configuration#transform-objectstri
 
 ### Options
 
-To add custom configuration, such as using the Ruby on Rails runner for ERB compilation, add a configuration object to the transformer entry in the ```package.json``` using the Jest syntax, such as:
+To add custom configuration, such as using the Ruby on Rails runner for ERB compilation, add a configuration object to the transformer entry in the ```package.json``` using the Jest syntax. For example, to compile JavaScript in the rails environment:
 
 ```json
 "transform": {
