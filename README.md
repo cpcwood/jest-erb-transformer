@@ -57,6 +57,10 @@ To add custom configuration, such as using the Ruby on Rails runner for ERB comp
 | ```"engine"``` | ```"erb"``` | Transformer uses the ruby 'ERB' engine by default, to use the [Erubi](https://github.com/jeremyevans/erubi) engine set the value to ```"erubi"```. |
 | ```"timeout"``` | ```"5000"``` | Set the timeout duration in milliseconds for the compilation of individual files. |
 
+## Contributing
+
+Feel free to ask questions using [issues](https://github.com/cpcwood/jest-erb-transformer/issues) or contribute if you have any improvements.
+
 ## License
 
 MIT
