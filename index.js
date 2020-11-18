@@ -12,26 +12,33 @@ function loadConfig (filePath, jestConfig) {
       delimiter: '__JEST_ERB_TRANSFORMER__'
     },
     timeout: 5000,
-    stdio: ['pipe', 'pipe', process.stderr]
+    stdio: ['pipe', 'pipe', process.stderr],
+    useBabel: false
   }
 
   // User options
   const userOptions = {
     application: {
-      regex: new RegExp(`^(rails|${config.application})$`),
+      tester: new RegExp(`^(rails|${config.application})$`),
       applyToConfig: () => {
         config.application = 'bin/rails'
         config.args.runner = 'runner'
       }
     },
     engine: {
-      regex: new RegExp(`^(erubi|${config.args.engine})$`),
+      tester: new RegExp(`^(erubi|${config.args.engine})$`),
       applyToConfig: () => {
         config.args.engine = 'erubi'
       }
     },
     timeout: {
-      regex: /^(\d+(?:\.\d*)?)$/,
+      tester: /^(\d+(?:\.\d*)?)$/,
+      applyToConfig: (userTimeout) => {
+        config.timeout = parseInt(userTimeout)
+      }
+    },
+    useBabel: {
+      tester: { test: val => typeof val === 'boolean' },
       applyToConfig: (userTimeout) => {
         config.timeout = parseInt(userTimeout)
       }
@@ -50,7 +57,7 @@ function loadConfig (filePath, jestConfig) {
       if (selectedOption === undefined) {
         console.warn(`WARNING - User Configuration: "${key}" is not a valid configuration key and will be ignored!`)
       } else {
-        const isValidValue = selectedOption.regex.test(value.toString())
+        const isValidValue = selectedOption.tester.test(value.toString())
         if (isValidValue) {
           selectedOption.applyToConfig(value)
         } else {
