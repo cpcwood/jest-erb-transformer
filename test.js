@@ -56,6 +56,20 @@ test('user config - timeout', () => {
   }).toThrow("Compilation of './tests/configSleep500.js.erb' timed out after 450ms!")
 })
 
+test('user config - useBabel', () => {
+  const testConfig = { useBabel: true }
+  expect(transformErb('./tests/es6.js.erb')).toEqual(`
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+      value: true
+    });
+    exports.ACCOUNT_PATH = void 0;
+    const ACCOUNT_PATH = '/account';
+    exports.ACCOUNT_PATH = ACCOUNT_PATH;
+  `, testConfig)
+})
+
 // Warnings
 test('user config - warning - invalid configuration key entered', () => {
   const testConfig = { 'not-a-key': 'value' }
@@ -74,15 +88,22 @@ test('user config - warning - invalid rails option entered', () => {
 test('user config - warning - invalid engine type entered', () => {
   const testConfig = { engine: 'not-an-engine' }
   const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
-  transformErb('./tests/erbEngine.js.erb', testConfig)
+  transformErb('./tests/helloWorld.js.erb', testConfig)
   expect(consoleSpy).toHaveBeenLastCalledWith('WARNING - User Configuration: "engine": "not-an-engine" is not a valid "engine" value, using default value instead!')
 })
 
 test('user config - warning - invalid timeout type entered', () => {
   const testConfig = { timeout: 'not-an-number' }
   const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
-  transformErb('./tests/erbEngine.js.erb', testConfig)
+  transformErb('./tests/helloWorld.js.erb', testConfig)
   expect(consoleSpy).toHaveBeenLastCalledWith('WARNING - User Configuration: "timeout": "not-an-number" is not a valid "timeout" value, using default value instead!')
+})
+
+test('user config - warning - invalid useBabel type entered', () => {
+  const testConfig = { useBabel: 'not-a-boolean' }
+  const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
+  transformErb('./tests/helloWorld.js.erb', testConfig)
+  expect(consoleSpy).toHaveBeenLastCalledWith('WARNING - User Configuration: "useBabel": "not-a-boolean" is not a valid "useBabel" value, using default value instead!')
 })
 
 test('user config - warning - could not be loaded', () => {
@@ -90,6 +111,7 @@ test('user config - warning - could not be loaded', () => {
   transformErb('./tests/configNotLoaded.na.erb')
   expect(consoleSpy).toHaveBeenLastCalledWith('WARNING - User Configuration could not be loaded, please check configuration is correct and report to the maintainers!')
 })
+
 
 // Errors
 test('error - general failure of childProcess.spawnSync', () => {
