@@ -1,3 +1,4 @@
+/* eslint no-undef: 0 */
 const fs = require('fs')
 const { process } = require('./index')
 const path = require('path')
@@ -104,7 +105,6 @@ test('user config - warning - could not be loaded', () => {
   transformErb('./tests/configNotLoaded.na.erb')
   expect(consoleSpy).toHaveBeenLastCalledWith('WARNING - User Configuration could not be loaded, please check configuration is correct and report to the maintainers!')
 })
-
 
 // Errors
 test('error - general failure of childProcess.spawnSync', () => {
