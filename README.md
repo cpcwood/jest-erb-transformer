@@ -1,6 +1,6 @@
 # Jest ERB Transformer
 
-[![npm-version](https://img.shields.io/npm/v/jest-erb-transformer.svg?color=blueviolet&style=flat-square)](https://www.npmjs.com/package/jest-erb-transformer) [![build-status](https://img.shields.io/travis/com/cpcwood/jest-erb-transformer.svg?style=flat-square)](https://travis-ci.com/github/cpcwood/jest-erb-transformer) [![code-coverage](https://img.shields.io/coveralls/github/cpcwood/jest-erb-transformer.svg?style=flat-square)](https://coveralls.io/github/cpcwood/jest-erb-transformer) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](https://standardjs.com)
+[![npm-version](https://img.shields.io/npm/v/jest-erb-transformer.svg?color=blueviolet&style=flat-square)](https://www.npmjs.com/package/jest-erb-transformer) [![build-status](https://img.shields.io/travis/com/cpcwood/jest-erb-transformer/master.svg?style=flat-square)](https://travis-ci.com/github/cpcwood/jest-erb-transformer) [![code-coverage](https://img.shields.io/coveralls/github/cpcwood/jest-erb-transformer.svg?style=flat-square)](https://coveralls.io/github/cpcwood/jest-erb-transformer) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](https://standardjs.com)
 
 ## Overview 
 

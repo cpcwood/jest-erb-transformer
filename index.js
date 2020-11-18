@@ -1,5 +1,6 @@
 const childProcess = require('child_process')
 const path = require('path')
+const babelJest = require('babel-jest')
 
 function loadConfig (filePath, jestConfig) {
   // Default Config
@@ -13,7 +14,7 @@ function loadConfig (filePath, jestConfig) {
     },
     timeout: 5000,
     stdio: ['pipe', 'pipe', process.stderr],
-    useBabel: false
+    babelConfig: false
   }
 
   // User options
@@ -32,15 +33,15 @@ function loadConfig (filePath, jestConfig) {
       }
     },
     timeout: {
-      tester: /^(\d+(?:\.\d*)?)$/,
+      tester: { test: value => /^(\d+(?:\.\d*)?)$/.test(value.toString()) },
       applyToConfig: (userTimeout) => {
         config.timeout = parseInt(userTimeout)
       }
     },
-    useBabel: {
-      tester: { test: val => typeof val === 'boolean' },
-      applyToConfig: (userTimeout) => {
-        config.timeout = parseInt(userTimeout)
+    babelConfig: {
+      tester: { test: value => ['boolean', 'string', 'object'].includes(typeof value) },
+      applyToConfig: () => {
+        config.babelConfig = {}
       }
     }
   }
@@ -57,7 +58,7 @@ function loadConfig (filePath, jestConfig) {
       if (selectedOption === undefined) {
         console.warn(`WARNING - User Configuration: "${key}" is not a valid configuration key and will be ignored!`)
       } else {
-        const isValidValue = selectedOption.tester.test(value.toString())
+        const isValidValue = selectedOption.tester.test(value)
         if (isValidValue) {
           selectedOption.applyToConfig(value)
         } else {
@@ -96,9 +97,17 @@ function erbTransformer (fileContent, filePath, config) {
   return compiledFile
 }
 
+function processFile (fileContent, filePath, config) {
+  let processedContent = String(erbTransformer(fileContent, filePath, config))
+  if (config.babelConfig) {
+    processedContent = babelJest.process(processedContent, filePath, config.babelConfig).code
+  }
+  return processedContent
+}
+
 module.exports = {
   process (fileContent, filePath, jestConfig) {
     const config = loadConfig(filePath, jestConfig)
-    return String(erbTransformer(fileContent, filePath, config))
+    return processFile(fileContent, filePath, config)
   }
 }

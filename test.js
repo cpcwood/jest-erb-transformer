@@ -56,18 +56,11 @@ test('user config - timeout', () => {
   }).toThrow("Compilation of './tests/configSleep500.js.erb' timed out after 450ms!")
 })
 
-test('user config - useBabel', () => {
-  const testConfig = { useBabel: true }
-  expect(transformErb('./tests/es6.js.erb')).toEqual(`
-    "use strict";
-
-    Object.defineProperty(exports, "__esModule", {
-      value: true
-    });
-    exports.ACCOUNT_PATH = void 0;
-    const ACCOUNT_PATH = '/account';
-    exports.ACCOUNT_PATH = ACCOUNT_PATH;
-  `, testConfig)
+test('user config - babelConfig', () => {
+  const testConfig = { babelConfig: true }
+  const result = transformErb('./tests/es6.js.erb', testConfig)
+  expect(result).toContain('exports.ACCOUNT_PATH = ACCOUNT_PATH;')
+  expect(result).not.toContain('// babel to remove this comment')
 })
 
 // Warnings
@@ -99,11 +92,11 @@ test('user config - warning - invalid timeout type entered', () => {
   expect(consoleSpy).toHaveBeenLastCalledWith('WARNING - User Configuration: "timeout": "not-an-number" is not a valid "timeout" value, using default value instead!')
 })
 
-test('user config - warning - invalid useBabel type entered', () => {
-  const testConfig = { useBabel: 'not-a-boolean' }
+test('user config - warning - invalid babelConfig type entered', () => {
+  const testConfig = { babelConfig: 1 }
   const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
   transformErb('./tests/helloWorld.js.erb', testConfig)
-  expect(consoleSpy).toHaveBeenLastCalledWith('WARNING - User Configuration: "useBabel": "not-a-boolean" is not a valid "useBabel" value, using default value instead!')
+  expect(consoleSpy).toHaveBeenLastCalledWith('WARNING - User Configuration: "babelConfig": "1" is not a valid "babelConfig" value, using default value instead!')
 })
 
 test('user config - warning - could not be loaded', () => {
