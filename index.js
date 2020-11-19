@@ -41,7 +41,7 @@ function loadConfig (filePath, jestConfig) {
     babelConfig: {
       tester: { test: value => ['boolean', 'string', 'object'].includes(typeof value) },
       applyToConfig: userBabelConfig => {
-        if (userBabelConfig === true) {
+        if (userBabelConfig.toString() === 'true') {
           config.babelConfig = {}
         } else if (typeof userBabelConfig === 'string') {
           config.babelConfig = {
@@ -49,6 +49,8 @@ function loadConfig (filePath, jestConfig) {
           }
         } else if (typeof userBabelConfig === 'object') {
           config.babelConfig = userBabelConfig
+        } else {
+          config.babelConfig = false
         }
       }
     }

@@ -59,6 +59,12 @@ test('user config - timeout', () => {
   }).toThrow("Compilation of './tests/configSleep500.js.erb' timed out after 450ms!")
 })
 
+test('user config - babelConfig false', () => {
+  const testConfig = { babelConfig: false }
+  const result = transformErb('./tests/es6.js.erb', testConfig)
+  expect(result).toEqual("\n\n// a comment\n\nexport const ACCOUNT_PATH = '/account';\n\n")
+})
+
 test('user config - babelConfig true', () => {
   const testConfig = { babelConfig: true }
   const result = transformErb('./tests/es6.js.erb', testConfig)
