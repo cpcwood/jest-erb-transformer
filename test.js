@@ -23,11 +23,13 @@ function transformErb (filePath, testConfiguration = {}) {
 }
 
 // Hooks
+// ========================
 afterEach(() => {
   jest.restoreAllMocks()
 })
 
 // Features
+// ========================
 test('compiles a simple file', () => {
   expect(transformErb('./tests/helloWorld.js.erb')).toEqual("var helloWorld = 'Hello World'")
 })
@@ -57,14 +59,22 @@ test('user config - timeout', () => {
   }).toThrow("Compilation of './tests/configSleep500.js.erb' timed out after 450ms!")
 })
 
-test('user config - babelConfig', () => {
+test('user config - babelConfig true', () => {
   const testConfig = { babelConfig: true }
   const result = transformErb('./tests/es6.js.erb', testConfig)
   expect(result).toContain('exports.ACCOUNT_PATH = ACCOUNT_PATH;')
-  expect(result).not.toContain('// babel to remove this comment')
+  expect(result).not.toContain('a comment')
+})
+
+test('user config - babelConfig path', () => {
+  const testConfig = { babelConfig: './tests/babel.config.js' }
+  const result = transformErb('./tests/es6.js.erb', testConfig)
+  expect(result).toContain('exports.ACCOUNT_PATH = ACCOUNT_PATH;')
+  expect(result).toContain('a comment')
 })
 
 // Warnings
+// ========================
 test('user config - warning - invalid configuration key entered', () => {
   const testConfig = { 'not-a-key': 'value' }
   const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
@@ -107,6 +117,7 @@ test('user config - warning - could not be loaded', () => {
 })
 
 // Errors
+// ========================
 test('error - general failure of childProcess.spawnSync', () => {
   jest.spyOn(childProcess, 'spawnSync').mockImplementation(() => { return { status: 1, signal: 'test', error: 'test' } })
   expect(() => {

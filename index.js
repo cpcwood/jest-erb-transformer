@@ -34,14 +34,20 @@ function loadConfig (filePath, jestConfig) {
     },
     timeout: {
       tester: { test: value => /^(\d+(?:\.\d*)?)$/.test(value.toString()) },
-      applyToConfig: (userTimeout) => {
+      applyToConfig: userTimeout => {
         config.timeout = parseInt(userTimeout)
       }
     },
     babelConfig: {
       tester: { test: value => ['boolean', 'string', 'object'].includes(typeof value) },
-      applyToConfig: () => {
-        config.babelConfig = {}
+      applyToConfig: userBabelConfig => {
+        if (userBabelConfig === true) {
+          config.babelConfig = {}
+        } else if (typeof userBabelConfig === 'string') {
+          config.babelConfig = {
+            configFile: userBabelConfig
+          }
+        }
       }
     }
   }
@@ -100,7 +106,8 @@ function erbTransformer (fileContent, filePath, config) {
 function processFile (fileContent, filePath, config) {
   let processedContent = String(erbTransformer(fileContent, filePath, config))
   if (config.babelConfig) {
-    processedContent = babelJest.process(processedContent, filePath, config.babelConfig).code
+    const babelTransformer = babelJest.createTransformer(config.babelConfig)
+    processedContent = babelTransformer.process(processedContent, filePath, {}).code
   }
   return processedContent
 }
