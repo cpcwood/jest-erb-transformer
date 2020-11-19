@@ -63,14 +63,26 @@ test('user config - babelConfig true', () => {
   const testConfig = { babelConfig: true }
   const result = transformErb('./tests/es6.js.erb', testConfig)
   expect(result).toContain('exports.ACCOUNT_PATH = ACCOUNT_PATH;')
-  expect(result).not.toContain('a comment')
+  expect(result).toContain('a comment')
 })
 
 test('user config - babelConfig path', () => {
   const testConfig = { babelConfig: './tests/babel.config.js' }
   const result = transformErb('./tests/es6.js.erb', testConfig)
   expect(result).toContain('exports.ACCOUNT_PATH = ACCOUNT_PATH;')
-  expect(result).toContain('a comment')
+  expect(result).not.toContain('a comment')
+})
+
+test('user config - babelConfig inline', () => {
+  const testConfig = {
+    babelConfig: {
+      comments: false,
+      minified: true
+    }
+  }
+  const result = transformErb('./tests/es6.js.erb', testConfig)
+  expect(result).toContain('exports.ACCOUNT_PATH=ACCOUNT_PATH;')
+  expect(result).not.toContain('a comment')
 })
 
 // Warnings

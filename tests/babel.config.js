@@ -1,4 +1,4 @@
 module.exports = {
-  comments: true,
+  comments: false,
   presets: ["@babel/preset-env"]
 }

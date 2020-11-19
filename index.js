@@ -47,6 +47,8 @@ function loadConfig (filePath, jestConfig) {
           config.babelConfig = {
             configFile: userBabelConfig
           }
+        } else if (typeof userBabelConfig === 'object') {
+          config.babelConfig = userBabelConfig
         }
       }
     }
