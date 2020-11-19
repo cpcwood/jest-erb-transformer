@@ -43,13 +43,28 @@ See the [Jest docs](https://jestjs.io/docs/en/configuration#transform-objectstri
 
 ### Options
 
-To add custom configuration, such as using the Ruby on Rails runner for ERB compilation, add a configuration object to the transformer entry in the ```package.json``` using the Jest syntax. For example, to compile JavaScript in the rails environment:
+To add custom configuration, such as using the Ruby on Rails runner for ERB compilation, add a configuration object to the transformer entry in the project ```package.json``` using the [Jest transformer configuration syntax](https://jestjs.io/docs/en/configuration#transform-objectstring-pathtotransformer--pathtotransformer-object). For example, to compile in the rails environment:
 
 ```json
 "transform": {
   "^.+\\.erb$": [ "jest-erb-transformer", { "application": "rails" } ]
 }
 ```
+
+#### Babel
+
+By default the transformer does not process its output with [Babel](https://babeljs.io/). 
+
+To perform post-processing with Babel, either configure the transformer ```babelConfig``` option as outlined in the options table below, or I have found including the ```.erb``` files in the [babel-jest](https://www.npmjs.com/package/babel-jest) transformer directly has worked in some scenarios. For example:
+
+```json
+"transform": {
+  "^.+\\.js(?:\\.erb)?$": "babel-jest",
+  "^.+\\.erb$": [ "jest-erb-transformer", { "application": "rails" } ]
+  }
+```
+
+#### All Options
 
 | Key | Default Value | Description |
 | :--- | :--- | :--- |
