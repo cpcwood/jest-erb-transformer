@@ -1,6 +1,6 @@
 # Jest ERB Transformer
 
-[![npm-version](https://img.shields.io/npm/v/jest-erb-transformer.svg?color=blueviolet&style=flat-square)](https://www.npmjs.com/package/jest-erb-transformer) [![build-status](https://img.shields.io/travis/com/cpcwood/jest-erb-transformer.svg?style=flat-square)](https://travis-ci.com/github/cpcwood/jest-erb-transformer) [![code-coverage](https://img.shields.io/coveralls/github/cpcwood/jest-erb-transformer.svg?style=flat-square)](https://coveralls.io/github/cpcwood/jest-erb-transformer) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](https://standardjs.com)
+[![npm-version](https://img.shields.io/npm/v/jest-erb-transformer.svg?color=blueviolet&style=flat-square)](https://www.npmjs.com/package/jest-erb-transformer) [![build-status](https://img.shields.io/travis/com/cpcwood/jest-erb-transformer/master.svg?style=flat-square)](https://travis-ci.com/github/cpcwood/jest-erb-transformer) [![code-coverage](https://img.shields.io/coveralls/github/cpcwood/jest-erb-transformer.svg?style=flat-square)](https://coveralls.io/github/cpcwood/jest-erb-transformer) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](https://standardjs.com)
 
 ## Overview 
 
@@ -56,7 +56,7 @@ To add custom configuration, such as using the Ruby on Rails runner for ERB comp
 | ```"application"``` | ```"ruby"``` | Transformer is run using ```ruby``` by default, set value to ```"rails"``` to use ```bin/rails runner```. The ```"rails"``` option can be useful if the .erb files include Ruby on Rails specific environment variables such as ```Rails.application.credentails```. |
 | ```"engine"``` | ```"erb"``` | Transformer uses the ruby 'ERB' engine by default, to use the [Erubi](https://github.com/jeremyevans/erubi) engine set the value to ```"erubi"```. |
 | ```"timeout"``` | ```"5000"``` | Set the timeout duration in milliseconds for the compilation of individual files. |
-
+| ```"babelConfig"``` | ```false``` | Process the output of the ERB transformer using [babel-jest](https://www.npmjs.com/package/babel-jest). <br> Options: <ul><li>```false``` - Disables the use of Babel.</li><li>```true``` - Babel processing using project or file-relative [Babel configuration file](https://babeljs.io/docs/en/config-files).</li><li>```./path/to/.babelrc.json``` - Relative path to Babel configuration file to be used for processing.</li><li>```{ "comments": false }``` - Object containing [Babel options](https://babeljs.io/docs/en/options) to be used for processing.</li></ul> | 
 ## Contributing
 
 Feel free to ask questions using [issues](https://github.com/cpcwood/jest-erb-transformer/issues) or contribute if you have any improvements.

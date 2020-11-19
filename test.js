@@ -1,3 +1,4 @@
+/* eslint no-undef: 0 */
 const fs = require('fs')
 const { process } = require('./index')
 const path = require('path')
@@ -22,11 +23,13 @@ function transformErb (filePath, testConfiguration = {}) {
 }
 
 // Hooks
+// ========================
 afterEach(() => {
   jest.restoreAllMocks()
 })
 
 // Features
+// ========================
 test('compiles a simple file', () => {
   expect(transformErb('./tests/helloWorld.js.erb')).toEqual("var helloWorld = 'Hello World'")
 })
@@ -56,7 +59,40 @@ test('user config - timeout', () => {
   }).toThrow("Compilation of './tests/configSleep500.js.erb' timed out after 450ms!")
 })
 
+test('user config - babelConfig false', () => {
+  const testConfig = { babelConfig: false }
+  const result = transformErb('./tests/es6.js.erb', testConfig)
+  expect(result).toEqual("\n\n// a comment\n\nexport const ACCOUNT_PATH = '/account';\n\n")
+})
+
+test('user config - babelConfig true', () => {
+  const testConfig = { babelConfig: true }
+  const result = transformErb('./tests/es6.js.erb', testConfig)
+  expect(result).toContain('exports.ACCOUNT_PATH = ACCOUNT_PATH;')
+  expect(result).toContain('a comment')
+})
+
+test('user config - babelConfig path', () => {
+  const testConfig = { babelConfig: './tests/testBabelConfig.js' }
+  const result = transformErb('./tests/es6.js.erb', testConfig)
+  expect(result).toContain('exports.ACCOUNT_PATH = ACCOUNT_PATH;')
+  expect(result).not.toContain('a comment')
+})
+
+test('user config - babelConfig inline', () => {
+  const testConfig = {
+    babelConfig: {
+      comments: false,
+      minified: true
+    }
+  }
+  const result = transformErb('./tests/es6.js.erb', testConfig)
+  expect(result).toContain('exports.ACCOUNT_PATH=ACCOUNT_PATH;')
+  expect(result).not.toContain('a comment')
+})
+
 // Warnings
+// ========================
 test('user config - warning - invalid configuration key entered', () => {
   const testConfig = { 'not-a-key': 'value' }
   const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
@@ -74,15 +110,22 @@ test('user config - warning - invalid rails option entered', () => {
 test('user config - warning - invalid engine type entered', () => {
   const testConfig = { engine: 'not-an-engine' }
   const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
-  transformErb('./tests/erbEngine.js.erb', testConfig)
+  transformErb('./tests/helloWorld.js.erb', testConfig)
   expect(consoleSpy).toHaveBeenLastCalledWith('WARNING - User Configuration: "engine": "not-an-engine" is not a valid "engine" value, using default value instead!')
 })
 
 test('user config - warning - invalid timeout type entered', () => {
   const testConfig = { timeout: 'not-an-number' }
   const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
-  transformErb('./tests/erbEngine.js.erb', testConfig)
+  transformErb('./tests/helloWorld.js.erb', testConfig)
   expect(consoleSpy).toHaveBeenLastCalledWith('WARNING - User Configuration: "timeout": "not-an-number" is not a valid "timeout" value, using default value instead!')
+})
+
+test('user config - warning - invalid babelConfig type entered', () => {
+  const testConfig = { babelConfig: 1 }
+  const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
+  transformErb('./tests/helloWorld.js.erb', testConfig)
+  expect(consoleSpy).toHaveBeenLastCalledWith('WARNING - User Configuration: "babelConfig": "1" is not a valid "babelConfig" value, using default value instead!')
 })
 
 test('user config - warning - could not be loaded', () => {
@@ -92,6 +135,7 @@ test('user config - warning - could not be loaded', () => {
 })
 
 // Errors
+// ========================
 test('error - general failure of childProcess.spawnSync', () => {
   jest.spyOn(childProcess, 'spawnSync').mockImplementation(() => { return { status: 1, signal: 'test', error: 'test' } })
   expect(() => {

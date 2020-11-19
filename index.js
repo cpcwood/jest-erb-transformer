@@ -1,5 +1,6 @@
 const childProcess = require('child_process')
 const path = require('path')
+const babelJest = require('babel-jest')
 
 function loadConfig (filePath, jestConfig) {
   // Default Config
@@ -12,28 +13,45 @@ function loadConfig (filePath, jestConfig) {
       delimiter: '__JEST_ERB_TRANSFORMER__'
     },
     timeout: 5000,
-    stdio: ['pipe', 'pipe', process.stderr]
+    stdio: ['pipe', 'pipe', process.stderr],
+    babelConfig: false
   }
 
   // User options
   const userOptions = {
     application: {
-      regex: new RegExp(`^(rails|${config.application})$`),
+      tester: new RegExp(`^(rails|${config.application})$`),
       applyToConfig: () => {
         config.application = 'bin/rails'
         config.args.runner = 'runner'
       }
     },
     engine: {
-      regex: new RegExp(`^(erubi|${config.args.engine})$`),
+      tester: new RegExp(`^(erubi|${config.args.engine})$`),
       applyToConfig: () => {
         config.args.engine = 'erubi'
       }
     },
     timeout: {
-      regex: /^(\d+(?:\.\d*)?)$/,
-      applyToConfig: (userTimeout) => {
+      tester: { test: value => /^(\d+(?:\.\d*)?)$/.test(value.toString()) },
+      applyToConfig: userTimeout => {
         config.timeout = parseInt(userTimeout)
+      }
+    },
+    babelConfig: {
+      tester: { test: value => ['boolean', 'string', 'object'].includes(typeof value) },
+      applyToConfig: userBabelConfig => {
+        if (userBabelConfig.toString() === 'true') {
+          config.babelConfig = {}
+        } else if (typeof userBabelConfig === 'string') {
+          config.babelConfig = {
+            configFile: userBabelConfig
+          }
+        } else if (typeof userBabelConfig === 'object') {
+          config.babelConfig = userBabelConfig
+        } else {
+          config.babelConfig = false
+        }
       }
     }
   }
@@ -50,7 +68,7 @@ function loadConfig (filePath, jestConfig) {
       if (selectedOption === undefined) {
         console.warn(`WARNING - User Configuration: "${key}" is not a valid configuration key and will be ignored!`)
       } else {
-        const isValidValue = selectedOption.regex.test(value.toString())
+        const isValidValue = selectedOption.tester.test(value)
         if (isValidValue) {
           selectedOption.applyToConfig(value)
         } else {
@@ -89,9 +107,18 @@ function erbTransformer (fileContent, filePath, config) {
   return compiledFile
 }
 
+function processFile (fileContent, filePath, config) {
+  let processedContent = String(erbTransformer(fileContent, filePath, config))
+  if (config.babelConfig) {
+    const babelTransformer = babelJest.createTransformer(config.babelConfig)
+    processedContent = babelTransformer.process(processedContent, filePath, {}).code
+  }
+  return processedContent
+}
+
 module.exports = {
   process (fileContent, filePath, jestConfig) {
     const config = loadConfig(filePath, jestConfig)
-    return String(erbTransformer(fileContent, filePath, config))
+    return processFile(fileContent, filePath, config)
   }
 }
