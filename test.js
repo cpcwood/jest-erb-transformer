@@ -67,7 +67,7 @@ test('user config - babelConfig true', () => {
 })
 
 test('user config - babelConfig path', () => {
-  const testConfig = { babelConfig: './tests/babel.config.js' }
+  const testConfig = { babelConfig: './tests/testBabelConfig.js' }
   const result = transformErb('./tests/es6.js.erb', testConfig)
   expect(result).toContain('exports.ACCOUNT_PATH = ACCOUNT_PATH;')
   expect(result).not.toContain('a comment')
