@@ -147,8 +147,7 @@ test('user config - warning - could not be loaded', () => {
 // Errors
 // ========================
 test('error - general failure of childProcess.spawnSync', () => {
-  jest.spyOn(childProcess, 'spawnSync').mockImplementation(() => { return { status: 1, signal: 'test', error: 'test' } })
   expect(() => {
-    transformErb('./tests/helloWorld.js.erb')
-  }).toThrow("Error compiling './tests/helloWorld.js.erb',  status: '1', signal: 'test', error: test!")
+    transformErb('./tests/rubyError.js.erb')
+  }).toThrow("Error compiling './tests/rubyError.js.erb',  status: '1', signal: 'null', error: (erb):1:in `<main>': A ruby error (RuntimeError)")
 })
