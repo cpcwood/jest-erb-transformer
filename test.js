@@ -2,7 +2,6 @@
 const fs = require('fs')
 const { process } = require('./index')
 const path = require('path')
-const childProcess = require('child_process')
 
 function transformErb (filePath, testConfiguration = {}) {
   const jestConfig = {
