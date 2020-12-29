@@ -8,12 +8,13 @@ function loadConfig (filePath, jestConfig) {
     application: 'ruby',
     args: {
       runner: undefined,
+      windowsRunner: undefined,
       transformer: path.join(__dirname, 'erb_transformer.rb'),
       engine: 'erb',
       delimiter: '__JEST_ERB_TRANSFORMER__'
     },
     timeout: 5000,
-    stdio: ['pipe', 'pipe', process.stderr],
+    stdio: ['pipe', 'pipe', 'pipe'],
     babelConfig: false
   }
 
@@ -21,15 +22,22 @@ function loadConfig (filePath, jestConfig) {
   const userOptions = {
     application: {
       tester: new RegExp(`^(rails|${config.application})$`),
-      applyToConfig: () => {
-        config.application = 'bin/rails'
-        config.args.runner = 'runner'
+      applyToConfig: value => {
+        if (/^win/.test(process.platform) && value === 'rails') {
+          config.args.runner = 'bin\\rails'
+          config.args.windowsRunner = 'runner'
+        } else if (value === 'rails') {
+          config.application = 'bin/rails'
+          config.args.runner = 'runner'
+        } else {
+          config.args.application = value
+        }
       }
     },
     engine: {
       tester: new RegExp(`^(erubi|${config.args.engine})$`),
-      applyToConfig: () => {
-        config.args.engine = 'erubi'
+      applyToConfig: value => {
+        config.args.engine = value
       }
     },
     timeout: {
@@ -96,11 +104,11 @@ function erbTransformer (fileContent, filePath, config) {
       input: fileContent
     }
   )
-  if (child.status !== 0) {
+  if (child.status !== 0 || !!child.stderr.toString()) {
     if (child.error && child.error.code === 'ETIMEDOUT') {
       throw new Error(`Compilation of '${filePath}' timed out after ${config.timeout}ms!`)
     } else {
-      throw new Error(`Error compiling '${filePath}',  status: '${child.status}', signal: '${child.signal}', error: ${child.error}!`)
+      throw new Error(`Error compiling '${filePath}',  status: '${child.status}', signal: '${child.signal}', error: ${child.stderr.toString()}!`)
     }
   }
   const compiledFile = bufferToString(child.stdout, config.args.delimiter)

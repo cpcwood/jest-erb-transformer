@@ -2,7 +2,6 @@
 const fs = require('fs')
 const { process } = require('./index')
 const path = require('path')
-const childProcess = require('child_process')
 
 function transformErb (filePath, testConfiguration = {}) {
   const jestConfig = {
@@ -39,7 +38,7 @@ test('empty file', () => {
 })
 
 test('compiles a file with the ruby erb engine', () => {
-  expect(transformErb('./tests/erbEngine.js.erb')).toEqual("\nvar engine = 'erb'")
+  expect(transformErb('./tests/erbEngine.js.erb').trim()).toEqual("var engine = 'erb'")
 })
 
 test('user config - rails application', () => {
@@ -47,9 +46,19 @@ test('user config - rails application', () => {
   expect(transformErb('./tests/configApplication.js.erb', testConfig)).toEqual("var application = 'rails'")
 })
 
+test('user config - ruby application', () => {
+  const testConfig = { application: 'ruby' }
+  expect(transformErb('./tests/configApplication.js.erb', testConfig)).toEqual("var application = 'ruby'")
+})
+
 test('user config - erubi compiler', () => {
   const testConfig = { engine: 'erubi' }
-  expect(transformErb('./tests/erbEngine.js.erb', testConfig)).toEqual("var engine = 'erubi'")
+  expect(transformErb('./tests/erbEngine.js.erb', testConfig).trim()).toEqual("var engine = 'erubi'")
+})
+
+test('user config - erb compiler', () => {
+  const testConfig = { engine: 'erb' }
+  expect(transformErb('./tests/erbEngine.js.erb', testConfig).trim()).toEqual("var engine = 'erb'")
 })
 
 test('user config - timeout', () => {
@@ -62,7 +71,8 @@ test('user config - timeout', () => {
 test('user config - babelConfig false', () => {
   const testConfig = { babelConfig: false }
   const result = transformErb('./tests/es6.js.erb', testConfig)
-  expect(result).toEqual("\n\n// a comment\n\nexport const ACCOUNT_PATH = '/account';\n\n")
+  expect(result).toContain('// a comment')
+  expect(result).toContain("export const ACCOUNT_PATH = '/account';")
 })
 
 test('user config - babelConfig true', () => {
@@ -137,8 +147,7 @@ test('user config - warning - could not be loaded', () => {
 // Errors
 // ========================
 test('error - general failure of childProcess.spawnSync', () => {
-  jest.spyOn(childProcess, 'spawnSync').mockImplementation(() => { return { status: 1, signal: 'test', error: 'test' } })
   expect(() => {
-    transformErb('./tests/helloWorld.js.erb')
-  }).toThrow("Error compiling './tests/helloWorld.js.erb',  status: '1', signal: 'test', error: test!")
+    transformErb('./tests/rubyError.js.erb')
+  }).toThrow("Error compiling './tests/rubyError.js.erb',  status: '1', signal: 'null', error: (erb):1:in `<main>': A ruby error (RuntimeError)")
 })
