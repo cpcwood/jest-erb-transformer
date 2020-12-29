@@ -21,9 +21,11 @@ function loadConfig (filePath, jestConfig) {
   const userOptions = {
     application: {
       tester: new RegExp(`^(rails|${config.application})$`),
-      applyToConfig: () => {
-        config.application = 'bin/rails'
-        config.args.runner = 'runner'
+      applyToConfig: value => {
+        if (value === 'rails') {
+          config.application = 'bin/rails'
+          config.args.runner = 'runner'
+        }
       }
     },
     engine: {

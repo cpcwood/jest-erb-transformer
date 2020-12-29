@@ -47,6 +47,11 @@ test('user config - rails application', () => {
   expect(transformErb('./tests/configApplication.js.erb', testConfig)).toEqual("var application = 'rails'")
 })
 
+test('user config - ruby application', () => {
+  const testConfig = { application: 'ruby' }
+  expect(transformErb('./tests/configApplication.js.erb', testConfig)).toEqual("var application = 'ruby'")
+})
+
 test('user config - erubi compiler', () => {
   const testConfig = { engine: 'erubi' }
   expect(transformErb('./tests/erbEngine.js.erb', testConfig)).toEqual("var engine = 'erubi'")
