@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
 
-args = ARGV[1..-1].join(' ')
-system(%{RAILS_ENV=rails ruby #{args}})
+args = ARGV[1..-1]
+system({"RAILS_ENV" => "rails"}, "ruby", *args)

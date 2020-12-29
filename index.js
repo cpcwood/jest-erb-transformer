@@ -8,6 +8,7 @@ function loadConfig (filePath, jestConfig) {
     application: 'ruby',
     args: {
       runner: undefined,
+      windowsRunner: undefined,
       transformer: path.join(__dirname, 'erb_transformer.rb'),
       engine: 'erb',
       delimiter: '__JEST_ERB_TRANSFORMER__'
@@ -22,9 +23,14 @@ function loadConfig (filePath, jestConfig) {
     application: {
       tester: new RegExp(`^(rails|${config.application})$`),
       applyToConfig: value => {
-        if (value === 'rails') {
+        if (/^win/.test(process.platform) && value === 'rails') {
+          config.args.runner = 'bin\\rails'
+          config.args.windowsRunner = 'runner'
+        } else if (value === 'rails') {
           config.application = 'bin/rails'
           config.args.runner = 'runner'
+        } else {
+          config.args.application = value
         }
       }
     },
@@ -98,7 +104,7 @@ function erbTransformer (fileContent, filePath, config) {
       input: fileContent
     }
   )
-  if (child.status !== 0) {
+  if (child.status !== 0 || !!child.stderr.toString()) {
     if (child.error && child.error.code === 'ETIMEDOUT') {
       throw new Error(`Compilation of '${filePath}' timed out after ${config.timeout}ms!`)
     } else {

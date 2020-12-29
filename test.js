@@ -71,7 +71,8 @@ test('user config - timeout', () => {
 test('user config - babelConfig false', () => {
   const testConfig = { babelConfig: false }
   const result = transformErb('./tests/es6.js.erb', testConfig)
-  expect(result).toEqual("\n\n// a comment\n\nexport const ACCOUNT_PATH = '/account';\n\n")
+  expect(result).toContain('// a comment')
+  expect(result).toContain("export const ACCOUNT_PATH = '/account';")
 })
 
 test('user config - babelConfig true', () => {
