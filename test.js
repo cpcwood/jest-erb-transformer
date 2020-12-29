@@ -39,7 +39,7 @@ test('empty file', () => {
 })
 
 test('compiles a file with the ruby erb engine', () => {
-  expect(transformErb('./tests/erbEngine.js.erb')).toEqual("\nvar engine = 'erb'")
+  expect(transformErb('./tests/erbEngine.js.erb').trim()).toEqual("var engine = 'erb'")
 })
 
 test('user config - rails application', () => {
@@ -54,7 +54,12 @@ test('user config - ruby application', () => {
 
 test('user config - erubi compiler', () => {
   const testConfig = { engine: 'erubi' }
-  expect(transformErb('./tests/erbEngine.js.erb', testConfig)).toEqual("var engine = 'erubi'")
+  expect(transformErb('./tests/erbEngine.js.erb', testConfig).trim()).toEqual("var engine = 'erubi'")
+})
+
+test('user config - erb compiler', () => {
+  const testConfig = { engine: 'erb' }
+  expect(transformErb('./tests/erbEngine.js.erb', testConfig).trim()).toEqual("var engine = 'erb'")
 })
 
 test('user config - timeout', () => {

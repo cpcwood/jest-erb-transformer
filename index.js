@@ -30,8 +30,8 @@ function loadConfig (filePath, jestConfig) {
     },
     engine: {
       tester: new RegExp(`^(erubi|${config.args.engine})$`),
-      applyToConfig: () => {
-        config.args.engine = 'erubi'
+      applyToConfig: value => {
+        config.args.engine = value
       }
     },
     timeout: {
