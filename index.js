@@ -104,7 +104,7 @@ function erbTransformer (fileContent, filePath, config) {
       input: fileContent
     }
   )
-  if (child.status !== 0 || !!child.stderr.toString()) {
+  if (child.status !== 0) {
     if (child.error && child.error.code === 'ETIMEDOUT') {
       throw new Error(`Compilation of '${filePath}' timed out after ${config.timeout}ms!`)
     } else {
