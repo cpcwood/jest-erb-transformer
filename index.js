@@ -108,7 +108,7 @@ function erbTransformer (fileContent, filePath, config) {
     if (child.error && child.error.code === 'ETIMEDOUT') {
       throw new Error(`Compilation of '${filePath}' timed out after ${config.timeout}ms!`)
     } else {
-      throw new Error(`Error compiling '${filePath}',  status: '${child.status}', signal: '${child.signal}', error: ${child.stderr.toString()}!`)
+      throw new Error(`Error compiling '${filePath}', status: '${child.status}', signal: '${child.signal}', error: ${child.stderr ? child.stderr.toString() : 'undefined'}`)
     }
   }
   const compiledFile = bufferToString(child.stdout, config.args.delimiter)
