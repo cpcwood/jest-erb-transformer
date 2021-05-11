@@ -5,14 +5,27 @@ orbs:
   ruby: circleci/ruby@1.1.3
 
 workflows:
+  version: 2
   test:
     jobs:
       - test
+      - deploy:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
+
+defaults: &defaults
+  working_directory: ~/repo
+  docker:
+    - image: cimg/base:stable
 
 jobs:
   test:
-    docker:
-      - image: 'cimg/base:stable'     
+    <<: *defaults   
+    environment:
+      GEM_HOME: ~/bundle
     steps:
       - checkout
       - node/install:
@@ -20,8 +33,17 @@ jobs:
       - node/install-packages:
           pkg-manager: yarn
       - ruby/install:
-          version: '2.7'
-      - ruby/install-deps
+          version: '2.7.2'
+      - restore_cache:
+          keys:
+            - gems-v1-{{ checksum "./Gemfile.lock"  }}-{{ .Branch }}
+      - run:
+          name: 'Bundle install'
+          command: bundle install
+      - save_cache:
+          key: gems-v1-{{ checksum "./Gemfile.lock"  }}-{{ .Branch }}
+          paths:
+            - ~/bundle
       - run:
           name: 'Specs'
           command: yarn test
@@ -31,3 +53,18 @@ jobs:
       - run:
           name: 'Coverage'
           command: yarn coveralls
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
+  deploy:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/repo/.npmrc
+      - run:
+          name: Publish package
+          command: npm publish
+

@@ -1,13 +1,13 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    erubi (1.9.0)
+    erubi (1.10.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  erubi
+  erubi (~> 1.10)
 
 BUNDLED WITH
    2.1.4

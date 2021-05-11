@@ -1,3 +1,3 @@
 source 'https://rubygems.org'
 
-gem 'erubi'
+gem 'erubi', '~> 1.10'
