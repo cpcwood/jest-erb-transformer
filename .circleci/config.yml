@@ -30,6 +30,7 @@ jobs:
       - checkout
       - node/install:
           install-yarn: true
+          install-npm: true
       - node/install-packages:
           pkg-manager: yarn
       - ruby/install:
@@ -61,6 +62,8 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/repo
+      - node/install:
+          install-npm: true
       - run:
           name: Authenticate with registry
           command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/repo/.npmrc
