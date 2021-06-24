@@ -126,7 +126,7 @@ function processFile (fileContent, filePath, config) {
 
 module.exports = {
   process (fileContent, filePath, jestConfig) {
-    const config = loadConfig(filePath, jestConfig)
+    const config = loadConfig(filePath, jestConfig.config)
     return processFile(fileContent, filePath, config)
   }
 }

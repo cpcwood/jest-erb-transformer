@@ -5,17 +5,19 @@ const path = require('path')
 
 function transformErb (filePath, testConfiguration = {}) {
   const jestConfig = {
-    transform: [
-      [
-        '\\.js.erb$',
-        path.join(__dirname, 'index.js'),
-        testConfiguration
-      ],
-      [
-        '\\.na\\.erb$',
-        path.join(__dirname, 'index.js')
+    config: {
+      transform: [
+        [
+          '\\.js.erb$',
+          path.join(__dirname, 'index.js'),
+          testConfiguration
+        ],
+        [
+          '\\.na\\.erb$',
+          path.join(__dirname, 'index.js')
+        ]
       ]
-    ]
+    }
   }
   const fileContent = fs.readFileSync(filePath).toString()
   return process(fileContent, filePath, jestConfig)
