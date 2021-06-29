@@ -4,7 +4,8 @@
   "description": "Jest transformer for Embedded Ruby (`.erb`) files in Ruby projects",
   "main": "index.js",
   "scripts": {
-    "test": "jest --no-cache --coverage",
+    "test": "jest --no-cache --coverage ./test.js",
+    "e2e": "jest --no-cache --config ./e2e/jest.config.json",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "lint": "eslint index.js test.js --fix"
   },
@@ -39,6 +40,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "jest": "^26.0.1"
+    "jest": "^26.0.1",
+    "jest-erb-transformer": "./"
   }
 }

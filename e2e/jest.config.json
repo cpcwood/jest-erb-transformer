@@ -1,0 +1,9 @@
+{
+    "moduleFileExtensions": [
+      "js",
+      "erb"
+    ],
+    "transform": {
+      "\\.js\\.erb$": "jest-erb-transformer"
+    }
+  }
