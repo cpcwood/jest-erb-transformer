@@ -46,8 +46,11 @@ jobs:
           paths:
             - ~/bundle
       - run:
-          name: 'Specs'
+          name: 'Unit specs'
           command: yarn test
+      - run:
+          name: 'e2e specs'
+          command: yarn e2e
       - run:
           name: 'Lint'
           command: yarn lint
