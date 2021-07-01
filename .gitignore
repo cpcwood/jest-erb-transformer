@@ -3,3 +3,4 @@ node_modules
 temp-files
 coverage
 process.yml
+*.log
