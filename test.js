@@ -3,26 +3,6 @@ const fs = require('fs')
 const { process } = require('./index')
 const path = require('path')
 
-function transformErb (filePath, testConfiguration = {}) {
-  const jestConfig = {
-    config: {
-      transform: [
-        [
-          '\\.js.erb$',
-          path.join(__dirname, 'index.js'),
-          testConfiguration
-        ],
-        [
-          '\\.na\\.erb$',
-          path.join(__dirname, 'index.js')
-        ]
-      ]
-    }
-  }
-  const fileContent = fs.readFileSync(filePath).toString()
-  return process(fileContent, filePath, jestConfig)
-}
-
 // Hooks
 // ========================
 afterEach(() => {
@@ -153,3 +133,43 @@ test('error - general failure of childProcess.spawnSync', () => {
     transformErb('./tests/rubyError.js.erb')
   }).toThrow("Error compiling './tests/rubyError.js.erb', status: '1', signal: 'null', error: (erb):1:in `<main>': A ruby error (RuntimeError)")
 })
+
+// Legacy versions
+// ========================
+test('(Jest v26) compiles a simple file', () => {
+  expect(transformErbV26('./tests/helloWorld.js.erb')).toEqual("var helloWorld = 'Hello World'")
+})
+
+// Spec Helpers
+// ========================
+function jestConfigV26 (testConfiguration) {
+  return {
+    transform: [
+      [
+        '\\.js.erb$',
+        path.join(__dirname, 'index.js'),
+        testConfiguration
+      ],
+      [
+        '\\.na\\.erb$',
+        path.join(__dirname, 'index.js')
+      ]
+    ]
+  }
+}
+
+function jestConfig (testConfiguration) {
+  return {
+    config: jestConfigV26(testConfiguration)
+  }
+}
+
+function transformErb (filePath, testConfiguration = {}) {
+  const fileContent = fs.readFileSync(filePath).toString()
+  return process(fileContent, filePath, jestConfig(testConfiguration))
+}
+
+function transformErbV26 (filePath, testConfiguration = {}) {
+  const fileContent = fs.readFileSync(filePath).toString()
+  return process(fileContent, filePath, jestConfigV26(testConfiguration))
+}

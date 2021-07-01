@@ -64,8 +64,11 @@ function loadConfig (filePath, jestConfig) {
     }
   }
 
+  // Get jest v27 config
+  const configObj = jestConfig.config ? jestConfig.config : jestConfig
+
   // Load user config
-  const erbTransformers = jestConfig.transform.filter(e => e[1] === __filename)
+  const erbTransformers = configObj.transform.filter(e => e[1] === __filename)
   const userConfig = erbTransformers.find(e => (new RegExp(e[0])).test(filePath))[2]
   if (userConfig === undefined) {
     console.warn('WARNING - User Configuration could not be loaded, please check configuration is correct and report to the maintainers!')
@@ -126,7 +129,7 @@ function processFile (fileContent, filePath, config) {
 
 module.exports = {
   process (fileContent, filePath, jestConfig) {
-    const config = loadConfig(filePath, jestConfig.config)
+    const config = loadConfig(filePath, jestConfig)
     return processFile(fileContent, filePath, config)
   }
 }
