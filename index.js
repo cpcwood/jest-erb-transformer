@@ -121,8 +121,9 @@ function erbTransformer (fileContent, filePath, config) {
 function processFile (fileContent, filePath, config) {
   let processedContent = String(erbTransformer(fileContent, filePath, config))
   if (config.babelConfig) {
-    const babelTransformer = babelJest.createTransformer(config.babelConfig)
-    processedContent = babelTransformer.process(processedContent, filePath, {}).code
+    const babelTransformer = babelJest.default.createTransformer(config.babelConfig)
+    const transformOptions = { config: process.cwd() }
+    processedContent = babelTransformer.process(processedContent, filePath, transformOptions).code
   }
   return processedContent
 }
