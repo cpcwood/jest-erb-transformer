@@ -12,35 +12,35 @@ afterEach(() => {
 // Features
 // ========================
 test('compiles a simple file', () => {
-  expect(transformErb('./tests/helloWorld.js.erb')).toEqual("var helloWorld = 'Hello World'")
+  expect(transformErb('./tests/helloWorld.js.erb').code).toEqual("var helloWorld = 'Hello World'")
 })
 
 test('empty file', () => {
-  expect(transformErb('./tests/emptyFile.js.erb')).toEqual('')
+  expect(transformErb('./tests/emptyFile.js.erb').code).toEqual('')
 })
 
 test('compiles a file with the ruby erb engine', () => {
-  expect(transformErb('./tests/erbEngine.js.erb').trim()).toEqual("var engine = 'erb'")
+  expect(transformErb('./tests/erbEngine.js.erb').code.trim()).toEqual("var engine = 'erb'")
 })
 
 test('user config - rails application', () => {
   const testConfig = { application: 'rails' }
-  expect(transformErb('./tests/configApplication.js.erb', testConfig)).toEqual("var application = 'rails'")
+  expect(transformErb('./tests/configApplication.js.erb', testConfig).code).toEqual("var application = 'rails'")
 })
 
 test('user config - ruby application', () => {
   const testConfig = { application: 'ruby' }
-  expect(transformErb('./tests/configApplication.js.erb', testConfig)).toEqual("var application = 'ruby'")
+  expect(transformErb('./tests/configApplication.js.erb', testConfig).code).toEqual("var application = 'ruby'")
 })
 
 test('user config - erubi compiler', () => {
   const testConfig = { engine: 'erubi' }
-  expect(transformErb('./tests/erbEngine.js.erb', testConfig).trim()).toEqual("var engine = 'erubi'")
+  expect(transformErb('./tests/erbEngine.js.erb', testConfig).code.trim()).toEqual("var engine = 'erubi'")
 })
 
 test('user config - erb compiler', () => {
   const testConfig = { engine: 'erb' }
-  expect(transformErb('./tests/erbEngine.js.erb', testConfig).trim()).toEqual("var engine = 'erb'")
+  expect(transformErb('./tests/erbEngine.js.erb', testConfig).code.trim()).toEqual("var engine = 'erb'")
 })
 
 test('user config - timeout', () => {
@@ -52,21 +52,21 @@ test('user config - timeout', () => {
 
 test('user config - babelConfig false', () => {
   const testConfig = { babelConfig: false }
-  const result = transformErb('./tests/es6.js.erb', testConfig)
+  const result = transformErb('./tests/es6.js.erb', testConfig).code
   expect(result).toContain('// a comment')
   expect(result).toContain("export const ACCOUNT_PATH = '/account';")
 })
 
 test('user config - babelConfig true', () => {
   const testConfig = { babelConfig: true }
-  const result = transformErb('./tests/es6.js.erb', testConfig)
+  const result = transformErb('./tests/es6.js.erb', testConfig).code
   expect(result).toContain('exports.ACCOUNT_PATH = ACCOUNT_PATH;')
   expect(result).toContain('a comment')
 })
 
 test('user config - babelConfig path', () => {
   const testConfig = { babelConfig: './tests/testBabelConfig.js' }
-  const result = transformErb('./tests/es6.js.erb', testConfig)
+  const result = transformErb('./tests/es6.js.erb', testConfig).code
   expect(result).toContain('exports.ACCOUNT_PATH = ACCOUNT_PATH;')
   expect(result).not.toContain('a comment')
 })
@@ -78,7 +78,7 @@ test('user config - babelConfig inline', () => {
       minified: true
     }
   }
-  const result = transformErb('./tests/es6.js.erb', testConfig)
+  const result = transformErb('./tests/es6.js.erb', testConfig).code
   expect(result).toContain('exports.ACCOUNT_PATH=ACCOUNT_PATH;')
   expect(result).not.toContain('a comment')
 })
@@ -137,7 +137,7 @@ test('error - general failure of childProcess.spawnSync', () => {
 // Legacy versions
 // ========================
 test('(Jest v26) compiles a simple file', () => {
-  expect(transformErbV26('./tests/helloWorld.js.erb')).toEqual("var helloWorld = 'Hello World'")
+  expect(transformErbV26('./tests/helloWorld.js.erb').code).toEqual("var helloWorld = 'Hello World'")
 })
 
 // Spec Helpers
