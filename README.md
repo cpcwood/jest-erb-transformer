@@ -8,13 +8,7 @@ Custom transformer for compiling Embedded Ruby template files (```.erb```) for u
 
 ## Install
 
-Add to project using npm:
-
-```sh
-npm install jest-erb-transformer --save-dev
-```
-
-Add to project using Yarn:
+Add to project using your package manager, e.g. yarn:
 
 ```sh
 yarn add jest-erb-transformer --dev
