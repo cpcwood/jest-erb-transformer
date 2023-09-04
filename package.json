@@ -1,13 +1,12 @@
 {
   "name": "jest-erb-transformer",
-  "version": "1.2.11",
+  "version": "1.2.12",
   "description": "Jest transformer for Embedded Ruby (`.erb`) files in Ruby projects",
   "main": "index.js",
   "packageManager": "yarn@3.6.3",
   "scripts": {
     "test": "jest --no-cache --coverage ./test.js",
     "e2e": "jest --no-cache --config ./e2e/jest.config.json",
-    "coveralls": "cat ./coverage/lcov.info | coveralls",
     "lint": "eslint index.js test.js --fix"
   },
   "repository": {
@@ -34,7 +33,6 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.22.15",
-    "coveralls": "^3.1.1",
     "eslint": "^8.48.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.28.1",
