@@ -1,6 +1,13 @@
 *.DS_Store
-node_modules
-temp-files
-coverage
-process.yml
 *.log
+
+node_modules
+coverage
+
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

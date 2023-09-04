@@ -1,9 +1,9 @@
 {
-    "moduleFileExtensions": [
-      "js",
-      "erb"
-    ],
-    "transform": {
-      "\\.js\\.erb$": "jest-erb-transformer"
-    }
+  "moduleFileExtensions": [
+    "js",
+    "erb"
+  ],
+  "transform": {
+    "\\.js\\.erb$": "<rootDir>/../"
   }
+}

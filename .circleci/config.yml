@@ -30,9 +30,6 @@ jobs:
       - checkout
       - node/install:
           install-yarn: true
-          install-npm: true
-      - node/install-packages:
-          pkg-manager: yarn
       - ruby/install:
           version: '2.7.2'
       - restore_cache:
@@ -59,7 +56,7 @@ jobs:
           command: yarn coveralls
       - persist_to_workspace:
           root: ~/repo
-          paths: .
+          paths: ./
   deploy:
     <<: *defaults
     steps:
