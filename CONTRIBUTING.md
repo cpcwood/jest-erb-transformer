@@ -6,11 +6,9 @@ Feel free to ask questions using [issues](https://github.com/cpcwood/jest-erb-tr
 
 The project uses the [`yarn`](https://yarnpkg.com/) package manager, please install by following Yarn's [documentation](https://yarnpkg.com/getting-started/install).
 
-To setup the project: clone the repository, navigate to the project's root directory, and install the dependencies using:
+To setup the project: clone the repository and navigate to the project's root directory.
 
-```sh
-yarn install
-```
+Packages are managed using yarn's plug and play zero installs.
 
 ## Tests
 
