@@ -1,8 +1,8 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@4.3.0
-  ruby: circleci/ruby@1.1.4
+  node: circleci/node@5.1.0
+  ruby: circleci/ruby@2.1.0
 
 workflows:
   version: 2
@@ -31,15 +31,15 @@ jobs:
       - node/install:
           install-yarn: true
       - ruby/install:
-          version: '2.7.2'
+          version: '3.2.2'
       - restore_cache:
           keys:
-            - gems-v1-{{ checksum "./Gemfile.lock"  }}-{{ .Branch }}
+            - gems-v2-{{ checksum "./Gemfile.lock"  }}-{{ .Branch }}
       - run:
           name: 'Bundle install'
           command: bundle install
       - save_cache:
-          key: gems-v1-{{ checksum "./Gemfile.lock"  }}-{{ .Branch }}
+          key: gems-v2-{{ checksum "./Gemfile.lock"  }}-{{ .Branch }}
           paths:
             - ~/bundle
       - run:
