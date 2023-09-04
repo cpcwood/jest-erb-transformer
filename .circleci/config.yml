@@ -63,7 +63,7 @@ jobs:
       - attach_workspace:
           at: ~/repo
       - node/install:
-          install-npm: true
+          install-yarn: true
       - run:
           name: Authenticate with registry
           command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/repo/.npmrc
