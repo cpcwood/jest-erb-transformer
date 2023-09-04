@@ -7,7 +7,6 @@
   "scripts": {
     "test": "jest --no-cache --coverage ./test.js",
     "e2e": "jest --no-cache --config ./e2e/jest.config.json",
-    "coveralls": "cat ./coverage/lcov.info | coveralls",
     "lint": "eslint index.js test.js --fix"
   },
   "repository": {
