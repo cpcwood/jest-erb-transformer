@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   node: circleci/node@5.1.0
   ruby: circleci/ruby@2.1.0
+  coveralls: coveralls/coveralls@2.0.0
 
 workflows:
   version: 2
@@ -14,7 +15,7 @@ workflows:
             - test
           filters:
             branches:
-              only: master
+              only: main
 
 defaults: &defaults
   working_directory: ~/repo
@@ -51,9 +52,7 @@ jobs:
       - run:
           name: 'Lint'
           command: yarn lint
-      - run:
-          name: 'Coverage'
-          command: yarn coveralls
+      - coveralls/upload
       - persist_to_workspace:
           root: ~/repo
           paths: ./
